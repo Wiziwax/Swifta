@@ -1,12 +1,13 @@
 package com.rapid.swifta.ServiceImpl;
 
-import com.startup.rapidoil.Entities.Orders;
-import com.startup.rapidoil.Enums.EnumOrderProgress;
-import com.startup.rapidoil.Exceptions.ResourceNotFoundException;
-import com.startup.rapidoil.Repositories.AddressRepository;
-import com.startup.rapidoil.Repositories.OrderDetailsRepository;
-import com.startup.rapidoil.Repositories.OrderRepository;
-import com.startup.rapidoil.Services.OrderService;
+
+import com.rapid.swifta.Entities.Orders;
+import com.rapid.swifta.Enums.EnumOrderProgress;
+import com.rapid.swifta.Exceptions.ResourceNotFoundException;
+import com.rapid.swifta.Repositories.AddressRepository;
+import com.rapid.swifta.Repositories.OrderDetailsRepository;
+import com.rapid.swifta.Repositories.OrderRepository;
+import com.rapid.swifta.Services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

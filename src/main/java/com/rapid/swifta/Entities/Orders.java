@@ -8,8 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalTime;
@@ -23,8 +21,6 @@ import static java.time.LocalTime.now;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-//@SQLDelete(sql = "UPDATE orders os SET os.deleted = 1 WHERE os.order_id=?")
-//@Where(clause = "deleted=false")
 public class Orders {
 
     @Id
@@ -62,6 +58,9 @@ public class Orders {
     @Column
     private boolean closed;
 
+    @Column
+    private boolean isOneOff;
+
     //Todo Make it possible to request multiple
     @Column
     private Integer merchantId;
@@ -71,5 +70,11 @@ public class Orders {
     @OneToOne(cascade = {CascadeType.ALL, CascadeType.PERSIST})
     @JoinColumn(name = "order_details_id")
     private OrderDetails orderDetails ;
+
+    @Column
+    private String orderComment;
+
+    @Column
+    private float orderRating;
 
 }

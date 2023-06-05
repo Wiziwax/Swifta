@@ -6,31 +6,30 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
-
 @Data
 @Table
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderDetails {
+public class Statistics {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer order_details_id;
+    private Integer statsId;
 
     @Column
-    private Integer orderId;
+    private Integer noOfUsers;
 
     @Column
-    private int quantity;
+    private Integer noOfMerchants;
 
     @Column
-    private BigDecimal pricePerUnit;
+    private Integer jobsCompleted;
 
     @Column
-    private BigDecimal totalPrice;
+    private Integer trustedClients;
+
 
 
 }
