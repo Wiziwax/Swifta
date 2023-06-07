@@ -22,4 +22,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query(nativeQuery = true, value = "SELECT * FROM user u WHERE u.role LIKE %:roleName% AND u.address_user_id in (:digits)")
     Page<User> findMerchantsByLocation(List<Integer> digits,String roleName, Pageable pageable);
 
+    @Query(nativeQuery = true, value = "SELECT * FROM User u where user_id in (:favouritesLists)")
+    Page<User> findAll(List<Integer> favouritesLists, Pageable pageable);
 }

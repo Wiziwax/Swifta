@@ -19,17 +19,17 @@ public class FavouritesRestController {
     @Autowired
     private UserRepository userRepository;
 
-    @PostMapping("")
+    @PostMapping("add")
     public Favourites createFavourites(@RequestBody Favourites favourites){
         return favouritesService.createFavourites(favourites);
     }
 
-    @GetMapping("")
-    public Page<Favourites> getAll(@RequestParam Integer userId, Pageable pageable){
+    @GetMapping("getall")
+    public Page<User> getAll(@RequestParam Integer userId, Pageable pageable){
         return favouritesService.getAllFavourites(userId, pageable);
     }
 
-    @DeleteMapping("")
+    @DeleteMapping("remove")
     public void removeFavourites(@RequestBody Favourites favourites){
         favouritesService.deleteFavouritesById(favourites);
     }

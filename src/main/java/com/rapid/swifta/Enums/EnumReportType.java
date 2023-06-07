@@ -1,6 +1,6 @@
 package com.rapid.swifta.Enums;
 
-public enum ReportType {
+public enum EnumReportType {
 
     NUDITY,
     VIOLENCE,

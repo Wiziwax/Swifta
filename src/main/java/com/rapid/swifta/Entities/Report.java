@@ -1,6 +1,6 @@
 package com.rapid.swifta.Entities;
 
-import com.rapid.swifta.Enums.ReportType;
+import com.rapid.swifta.Enums.EnumReportType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,7 +37,7 @@ public class Report {
 
     @Column
     @Enumerated(EnumType.STRING)
-    private ReportType reportType;
+    private EnumReportType enumReportType;
 
     @Column
     private boolean isTreated;

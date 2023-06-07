@@ -16,7 +16,9 @@ public class Favourites {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer favouritesId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User userFavourite;
+    @Column
+    private Integer createdBy;
+
+    @Column
+    private Integer userFavourite;
 }
