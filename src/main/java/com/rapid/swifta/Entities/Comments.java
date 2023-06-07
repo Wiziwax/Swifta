@@ -1,7 +1,7 @@
 package com.rapid.swifta.Entities;
 
 
-import com.rapid.swifta.Enums.EnumSatisfaction;
+import com.rapid.swifta.Enums.EnumRating;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,7 +32,7 @@ public class Comments {
     private Integer createdDate;
 
     @Column
-    private EnumSatisfaction enumSatisfaction;
+    private EnumRating enumRating;
 
 
 }

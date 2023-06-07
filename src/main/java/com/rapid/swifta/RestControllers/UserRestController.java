@@ -3,15 +3,14 @@ package com.rapid.swifta.RestControllers;
 
 import com.rapid.swifta.DTOs.UserModel;
 import com.rapid.swifta.Entities.Address;
+import com.rapid.swifta.Entities.Favourites;
 import com.rapid.swifta.Entities.User;
+import com.rapid.swifta.Services.FavouritesService;
 import com.rapid.swifta.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping("api/user")
@@ -19,6 +18,9 @@ public class UserRestController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private FavouritesService favouritesService;
 
     @PostMapping("create")
     public User createUser(@RequestBody UserModel user){
@@ -78,4 +80,5 @@ public class UserRestController {
                          @RequestParam int rating){
         return userService.rateUser(userId, rating);
     }
+
 }

@@ -89,14 +89,16 @@ public class User {
         private float rating;
 
         @Column
+        private boolean isBusy;
+
+        @Column
         private int jobCount;
 
         @Column
         private int rateCount;
 
-
-
+//        @OneToMany
+//        @JoinColumn(name = "user_favourite_id")
+//        private List<Favourites> favourites;
 
 }
-//        @OneToMany(mappedBy = "user")
-//        private List<Token> tokens;

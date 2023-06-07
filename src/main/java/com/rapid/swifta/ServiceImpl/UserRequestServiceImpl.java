@@ -1,0 +1,43 @@
+package com.rapid.swifta.ServiceImpl;
+
+import com.rapid.swifta.Entities.UserRequest;
+import com.rapid.swifta.Repositories.UserRequestRepository;
+import com.rapid.swifta.Services.UserRequestService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+@Service
+public class UserRequestServiceImpl implements UserRequestService {
+
+    @Autowired
+    private UserRequestRepository userRequestRepository;
+
+    @Override
+    public Page<UserRequest> getAllRequests(Pageable pageable) {
+        return userRequestRepository.findAll(pageable);
+    }
+
+    @Override
+    public UserRequest createUserRequest(UserRequest userRequest) {
+        return userRequestRepository.save(userRequest);
+    }
+
+    @Override
+    public void deleteUserRequest(Integer userRequestId) {
+        userRequestRepository.deleteById(userRequestId);
+    }
+
+    @Override
+    public UserRequest updateUserRequest(UserRequest userRequest) {
+        return userRequestRepository.save(userRequest);
+    }
+
+    @Override
+    public UserRequest getUserRequestById(Integer userRequestId) {
+        return null;
+    }
+
+
+}

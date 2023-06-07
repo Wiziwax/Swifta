@@ -1,6 +1,5 @@
 package com.rapid.swifta.DTOs;
 
-
 import com.rapid.swifta.Entities.Address;
 import com.rapid.swifta.UserProps.Role;
 import lombok.Data;
@@ -24,5 +23,6 @@ public class UserModel {
     private Role role;
     private Address address;
     private List<Integer> serviceType;
+
 
 }

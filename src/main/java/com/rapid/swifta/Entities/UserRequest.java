@@ -1,10 +1,13 @@
 package com.rapid.swifta.Entities;
 
+import com.rapid.swifta.Enums.EnumRequestType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Date;
 
 @Data
 @Table
@@ -12,22 +15,23 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Statistics {
+public class UserRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer statsId;
+    private Integer requestId;
 
     @Column
-    private Integer noOfUsers;
+    private String requestBody;
 
     @Column
-    private Integer noOfMerchants;
+    private Date createdDate;
 
     @Column
-    private Integer jobsCompleted;
+    private Integer createdBy;
 
     @Column
-    private Integer trustedClients;
+    private EnumRequestType requestType;
+
 
 }

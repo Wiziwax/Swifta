@@ -1,22 +1,22 @@
 package com.rapid.swifta.Entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @Table
 @Entity
 @Builder
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Activity {
+public class Favourites {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public Integer activityId;
+    private Integer favouritesId;
 
-    public Integer createdBy;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User userFavourite;
 }
