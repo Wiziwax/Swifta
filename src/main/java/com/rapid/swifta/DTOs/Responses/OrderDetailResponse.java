@@ -1,6 +1,5 @@
 package com.rapid.swifta.DTOs.Responses;
 
-import jakarta.persistence.Column;
 import lombok.Builder;
 
 import java.math.BigDecimal;

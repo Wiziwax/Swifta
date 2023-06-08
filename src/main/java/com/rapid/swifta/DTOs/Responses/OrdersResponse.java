@@ -1,16 +1,11 @@
 package com.rapid.swifta.DTOs.Responses;
 
 import com.rapid.swifta.Entities.Address;
-import com.rapid.swifta.Entities.OrderDetails;
 import com.rapid.swifta.Enums.EnumOrderProgress;
 import com.rapid.swifta.Enums.EnumPayment;
-import jakarta.persistence.*;
 import lombok.Builder;
-import org.springframework.data.annotation.CreatedDate;
-
 import java.time.LocalTime;
 import java.util.Date;
-
 import static java.time.LocalTime.now;
 
 @Builder

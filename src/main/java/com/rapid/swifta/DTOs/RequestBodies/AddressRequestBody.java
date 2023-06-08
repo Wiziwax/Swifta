@@ -1,6 +1,5 @@
 package com.rapid.swifta.DTOs.RequestBodies;
 
-import jakarta.persistence.Column;
 import lombok.Data;
 
 @Data

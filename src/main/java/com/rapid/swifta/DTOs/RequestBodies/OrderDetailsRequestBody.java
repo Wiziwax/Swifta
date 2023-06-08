@@ -1,8 +1,6 @@
 package com.rapid.swifta.DTOs.RequestBodies;
 
-import jakarta.persistence.Column;
 import lombok.Data;
-
 import java.math.BigDecimal;
 
 @Data

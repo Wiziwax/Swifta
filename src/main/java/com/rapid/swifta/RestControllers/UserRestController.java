@@ -18,9 +18,6 @@ public class UserRestController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private FavouritesService favouritesService;
-
     @PostMapping("create")
     public User createUser(@RequestBody UserRequestBody user){
         return userService.createUser(user);

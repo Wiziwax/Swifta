@@ -1,5 +1,6 @@
 package com.rapid.swifta.DTOs.RequestBodies;
 
+import com.rapid.swifta.Entities.Address;
 import com.rapid.swifta.UserProps.Role;
 import lombok.Data;
 
@@ -20,7 +21,7 @@ public class UserRequestBody {
     private float rate;
     private float rating;
     private Role role;
-    private AddressRequestBody address;
+    private Address address;
     private List<Integer> serviceType;
 
 
