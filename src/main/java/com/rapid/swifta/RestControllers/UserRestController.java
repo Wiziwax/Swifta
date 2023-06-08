@@ -1,9 +1,8 @@
 package com.rapid.swifta.RestControllers;
 
 
-import com.rapid.swifta.DTOs.UserModel;
+import com.rapid.swifta.DTOs.RequestBodies.UserRequestBody;
 import com.rapid.swifta.Entities.Address;
-import com.rapid.swifta.Entities.Favourites;
 import com.rapid.swifta.Entities.User;
 import com.rapid.swifta.Services.FavouritesService;
 import com.rapid.swifta.Services.UserService;
@@ -23,7 +22,7 @@ public class UserRestController {
     private FavouritesService favouritesService;
 
     @PostMapping("create")
-    public User createUser(@RequestBody UserModel user){
+    public User createUser(@RequestBody UserRequestBody user){
         return userService.createUser(user);
     }
 
@@ -35,6 +34,11 @@ public class UserRestController {
     @GetMapping("getall")
     public Page<User> getAllUsers(Pageable pageable){
         return userService.getAllUsers(pageable);
+    }
+
+    @GetMapping("getbyfirstandlastname")
+    public Page<User> getByFirstAndLastName(@RequestBody User user, Pageable pageable){
+        return userService.findByFirstAndLastName(user.getFirstName(), user.getLastName(), pageable);
     }
 
     @DeleteMapping("delete")

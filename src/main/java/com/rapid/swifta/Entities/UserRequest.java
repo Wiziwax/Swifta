@@ -31,6 +31,7 @@ public class UserRequest {
     private Integer createdBy;
 
     @Column
+    @Enumerated(EnumType.STRING)
     private EnumRequestType requestType;
 
 

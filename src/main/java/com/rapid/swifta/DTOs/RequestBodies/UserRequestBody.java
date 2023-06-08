@@ -1,13 +1,12 @@
-package com.rapid.swifta.DTOs;
+package com.rapid.swifta.DTOs.RequestBodies;
 
-import com.rapid.swifta.Entities.Address;
 import com.rapid.swifta.UserProps.Role;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-public class UserModel {
+public class UserRequestBody {
 
     private Integer userId;
     private String firstName;
@@ -19,9 +18,9 @@ public class UserModel {
     private String mobile;
     private String image;
     private float rate;
-    private long jobCount;
+    private float rating;
     private Role role;
-    private Address address;
+    private AddressRequestBody address;
     private List<Integer> serviceType;
 
 

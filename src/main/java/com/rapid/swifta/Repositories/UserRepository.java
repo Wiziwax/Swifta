@@ -24,4 +24,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Query(nativeQuery = true, value = "SELECT * FROM User u where user_id in (:favouritesLists)")
     Page<User> findAll(List<Integer> favouritesLists, Pageable pageable);
+
+    Page<User> findAllByFirstNameContainingAndLastNameContaining(String firstName, String lastName, Pageable pageable);
 }

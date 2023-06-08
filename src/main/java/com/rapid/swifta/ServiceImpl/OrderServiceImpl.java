@@ -86,6 +86,7 @@ public class OrderServiceImpl implements OrderService {
     public Orders acceptOrderMerchant(Orders order) {
         Orders existingOrder = getOrderById(order.getOrderId());
         existingOrder.setHasMerchantAccepted(!existingOrder.isHasMerchantAccepted());
+        existingOrder.setEnumOrderProgress(EnumOrderProgress.IN_PROGRESS);
         orderRepository.save(existingOrder);
         return existingOrder;
     }

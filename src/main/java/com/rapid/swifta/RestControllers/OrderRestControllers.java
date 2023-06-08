@@ -18,7 +18,7 @@ public class OrderRestControllers {
     private OrderService orderService;
 
     @GetMapping("getallorders")
-    Page<Orders> getAllUsers (Pageable pageable){
+    Page<Orders> getAllOrders (Pageable pageable){
         return orderService.getAllOrders(pageable);
     }
 

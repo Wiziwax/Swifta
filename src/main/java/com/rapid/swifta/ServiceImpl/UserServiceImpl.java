@@ -1,7 +1,7 @@
 package com.rapid.swifta.ServiceImpl;
 
 
-import com.rapid.swifta.DTOs.UserModel;
+import com.rapid.swifta.DTOs.RequestBodies.UserRequestBody;
 import com.rapid.swifta.Entities.Address;
 import com.rapid.swifta.Entities.User;
 import com.rapid.swifta.Exceptions.ResourceNotFoundException;
@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(UserModel user) {
+    public User createUser(UserRequestBody user) {
 
         user.setRole(Role.ADMIN);
         User newUser = new User();
@@ -108,6 +108,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Page<User> findByFirstAndLastName(String firstName, String lastName, Pageable pageable) {
+        return userRepository.findAllByFirstNameContainingAndLastNameContaining(firstName, lastName, pageable);
+    }
+
+    @Override
     public User rateUser(Integer userId, int rating) {
 
         User existingUser = userRepository.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User with Id " + userId + "could not be found"));
@@ -121,7 +126,7 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    private void mapFields(UserModel user, User newUser) {
+    private void mapFields(UserRequestBody user, User newUser) {
         newUser.setFirstName(user.getFirstName());
         newUser.setMiddleName(user.getMiddleName());
         newUser.setLastName(user.getLastName());
