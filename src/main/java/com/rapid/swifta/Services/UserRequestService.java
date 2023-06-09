@@ -9,7 +9,6 @@ public interface UserRequestService {
     Page<UserRequest> getAllRequests(Pageable pageable);
     UserRequest createUserRequest(UserRequest userRequest);
     void deleteUserRequest(Integer userRequestId);
-    UserRequest updateUserRequest(UserRequest userRequest);
     UserRequest getUserRequestById(Integer userRequestId);
 
 }

@@ -2,7 +2,9 @@ package com.rapid.swifta.ServiceImpl;
 
 
 import com.rapid.swifta.DTOs.RequestBodies.UserRequestBody;
+import com.rapid.swifta.DTOs.Responses.UserResponse;
 import com.rapid.swifta.Entities.Address;
+import com.rapid.swifta.Entities.ServiceType;
 import com.rapid.swifta.Entities.User;
 import com.rapid.swifta.Exceptions.ResourceNotFoundException;
 import com.rapid.swifta.Repositories.AddressRepository;
@@ -31,8 +33,9 @@ public class UserServiceImpl implements UserService {
     private ServiceTypeRepository serviceTypeRepository;
 
     @Override
-    public Page<User> getAllUsersByRandom(Pageable pageable) {
-        return userRepository.findAllByRandom(pageable);
+    public Page<UserResponse> getAllUsersByRandom(Pageable pageable) {
+        Page<User> users = userRepository.findAllByRandom(pageable);
+        return userResponsesPage(users);
     }
 
     @Override
@@ -52,24 +55,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<User> getMerchantByLocation(String location, Integer roleId, Pageable pageable) {
+    public Page<UserResponse> getMerchantByLocation(String location, Integer roleId, Pageable pageable) {
         List<Integer> digits = findByLocation(location);
         Role role = Role.fromNumericValue(roleId);
         String roleName = role.name();
-        return userRepository.findMerchantsByLocation(digits, roleName, pageable);
+        Page<User> users = userRepository.findMerchantsByLocation(digits, roleName, pageable);
+        return userResponsesPage(users);
     }
 
     @Override
-    public Page<User> getAllUsers(Pageable pageable) {
-        return userRepository.findAll(pageable);
+    public Page<UserResponse> getAllUsers(Pageable pageable) {
+        Page<User> users =userRepository.findAll(pageable);
+        return userResponsesPage(users);
     }
 
     @Override
-    public Page<User> findAllLocationRandom(String location, Integer roleId, Pageable pageable) {
+    public Page<UserResponse> findAllLocationRandom(String location, Integer roleId, Pageable pageable) {
         List<Integer> digits = findByLocation(location);
         Role role = Role.fromNumericValue(roleId);
         String roleName = role.name();
-        return userRepository.findAllLocationRandom(digits, roleName, pageable);
+        Page<User> users = userRepository.findAllLocationRandom(digits, roleName, pageable);
+        return userResponsesPage(users);
     }
 
     @Override
@@ -102,14 +108,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<User> searchUsers(String location, int serviceType, Pageable pageable) {
+    public Page<UserResponse> searchUsers(String location, int serviceType, Pageable pageable) {
         List<Integer> addressIds = findByLocation(location);
-        return userRepository.findByServiceTypeAndLocation(addressIds, serviceType, pageable);
+        Page<User> users = userRepository.findByServiceTypeAndLocation(addressIds, serviceType, pageable);
+        return userResponsesPage(users);
     }
 
     @Override
-    public Page<User> findByFirstAndLastName(String firstName, String lastName, Pageable pageable) {
-        return userRepository.findAllByFirstNameContainingAndLastNameContaining(firstName, lastName, pageable);
+    public Page<UserResponse> findByFirstAndLastName(String firstName, String lastName, Pageable pageable) {
+        Page<User> userPage= userRepository.findAllByFirstNameContainingAndLastNameContaining(firstName, lastName, pageable);
+        return userResponsesPage(userPage);
     }
 
     @Override
@@ -137,5 +145,60 @@ public class UserServiceImpl implements UserService {
         newUser.setAddress(user.getAddress());
         newUser.setServiceType(serviceTypeRepository.findAllById(user.getServiceType()));
 
+    }
+
+    public List<String> serviceTypeList(List<ServiceType> serviceTypes){
+        List<String> stringList = new ArrayList<>();
+
+        for (ServiceType serviceType : serviceTypes) {
+            stringList.add(serviceType.getServiceTypeName());
+        }
+        return stringList;
+    }
+
+    public Page<UserResponse> userResponsesPage(Page<User> users){
+        return users.map(user -> UserResponse.builder()
+                .firstName(user.getFirstName())
+                .middleName(user.getMiddleName())
+                .lastName(user.getLastName())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .createdDate(user.getCreatedDate())
+                .mobile(user.getMobile())
+                .image(user.getImage())
+                .address(user.getAddress().getHouseNumber()+ ", "+
+                        user.getAddress().getStreetName()+", "+
+                        user.getAddress().getArea()+", "+
+                        user.getAddress().getState()+", "+
+                        user.getAddress().getCountry())
+                .serviceType(serviceTypeList(user.getServiceType()))
+                .role(user.getRole())
+                .rating(user.getRating())
+                .isBusy(user.isBusy())
+                .rateCount(user.getRateCount()).build());
+    }
+
+    public UserResponse userResponse(User user){
+        return UserResponse.builder()
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .middleName(user.getMiddleName())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .createdDate(user.getCreatedDate())
+                .mobile(user.getMobile())
+                .image(user.getImage())
+                .address(user.getAddress().getHouseNumber()+ ", "+
+                        user.getAddress().getStreetName()+", "+
+                        user.getAddress().getArea()+", "+
+                        user.getAddress().getState()+", "+
+                        user.getAddress().getCountry())
+                .serviceType(serviceTypeList(user.getServiceType()))
+                .role(user.getRole())
+                .rating(user.getRating())
+                .jobCount(user.getJobCount())
+                .rateCount(user.getRateCount())
+                .isBusy(user.isBusy())
+                .verified(user.isVerified()).build();
     }
 }

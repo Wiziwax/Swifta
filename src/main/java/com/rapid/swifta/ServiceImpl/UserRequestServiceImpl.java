@@ -1,6 +1,7 @@
 package com.rapid.swifta.ServiceImpl;
 
 import com.rapid.swifta.Entities.UserRequest;
+import com.rapid.swifta.Exceptions.ResourceNotFoundException;
 import com.rapid.swifta.Repositories.UserRequestRepository;
 import com.rapid.swifta.Services.UserRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,14 +30,12 @@ public class UserRequestServiceImpl implements UserRequestService {
         userRequestRepository.deleteById(userRequestId);
     }
 
-    @Override
-    public UserRequest updateUserRequest(UserRequest userRequest) {
-        return userRequestRepository.save(userRequest);
-    }
+
 
     @Override
     public UserRequest getUserRequestById(Integer userRequestId) {
-        return null;
+        return userRequestRepository.findById(userRequestId).
+                orElseThrow(()-> new ResourceNotFoundException("Request with ID " + userRequestId + " was not found"));
     }
 
 

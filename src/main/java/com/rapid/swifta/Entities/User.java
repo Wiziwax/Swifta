@@ -1,8 +1,8 @@
 package com.rapid.swifta.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rapid.swifta.UserProps.Role;
 import jakarta.persistence.*;
-
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -16,7 +16,7 @@ import org.hibernate.annotations.Where;
 import java.sql.Timestamp;
 import java.util.List;
 
-import static jakarta.persistence.FetchType.EAGER;
+import static jakarta.persistence.FetchType.LAZY;
 
 @Data
 @Table
@@ -50,6 +50,7 @@ public class User {
         @Email(message = "Email should be valid")
         private String email;
 
+        @JsonIgnore
         @Column(nullable = false)
         private String password;
 
@@ -74,7 +75,7 @@ public class User {
         @JoinColumn(name = "address_user_id")
         private Address address;
 
-        @ManyToMany(fetch = EAGER)
+        @ManyToMany(fetch = LAZY)
         @JoinTable(
                 name = "user_service_types",
                 joinColumns = @JoinColumn(name = "user_id"),

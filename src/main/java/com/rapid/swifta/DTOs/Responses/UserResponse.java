@@ -1,11 +1,13 @@
 package com.rapid.swifta.DTOs.Responses;
 
-import com.rapid.swifta.Entities.Address;
-import com.rapid.swifta.Entities.ServiceType;
 import com.rapid.swifta.UserProps.Role;
 import lombok.Builder;
-import java.util.Date;
+import lombok.Data;
 
+import java.util.Date;
+import java.util.List;
+
+@Data
 @Builder
 public class UserResponse {
 
@@ -17,8 +19,8 @@ public class UserResponse {
     private Date createdDate;
     private String mobile;
     private String image;
-    private Address address;
-    private ServiceType serviceType;
+    private String address;
+    private List<String> serviceType;
     private Role role;
     private float rating;
     private int jobCount;

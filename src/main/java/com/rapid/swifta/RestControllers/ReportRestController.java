@@ -1,14 +1,15 @@
 package com.rapid.swifta.RestControllers;
 
+import com.rapid.swifta.DTOs.RequestBodies.GenericRequestBody;
+import com.rapid.swifta.DTOs.RequestBodies.ReportRequestBody;
+import com.rapid.swifta.DTOs.RequestBodies.ReportUpdateBody;
+import com.rapid.swifta.DTOs.Responses.ReportResponse;
 import com.rapid.swifta.Entities.Report;
 import com.rapid.swifta.Services.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/report")
@@ -17,16 +18,33 @@ public class ReportRestController {
     @Autowired
     private ReportService reportService;
 
-    public Page<Report> getAllReport(Pageable pageable){
+    @GetMapping("getall")
+    public Page<ReportResponse> getAllReport(Pageable pageable){
         return reportService.getAllReport(pageable);
     }
 
-    public Report getReportById(@RequestParam Integer reportId){
+    @GetMapping("getbyid")
+    public ReportResponse getReportById(@RequestParam Integer reportId){
         return reportService.getReportId(reportId);
     }
 
-    public void deleteReportById(@RequestBody Integer reportId){
-        reportService.deleteReport(reportId);
+    @DeleteMapping("delete")
+    public void deleteReportById(@RequestBody GenericRequestBody requestBody){
+        reportService.deleteReport(requestBody.getId());
     }
 
+    @PostMapping("create")
+    public Report createReport(@RequestBody ReportRequestBody reportRequestBody){
+        return reportService.createReport(reportRequestBody);
+    }
+
+    @GetMapping("getignored")
+    public Page<ReportResponse> getIgnored(@RequestBody ReportUpdateBody reportUpdateBody, Pageable pageable){
+        return reportService.findByIgnored(pageable, reportUpdateBody.isIgnored());
+    }
+
+    @GetMapping("gettreated")
+    public Page<ReportResponse> getTreated(@RequestBody ReportUpdateBody reportUpdateBody, Pageable pageable){
+        return reportService.findByTreated(pageable, reportUpdateBody.isTreated());
+    }
 }

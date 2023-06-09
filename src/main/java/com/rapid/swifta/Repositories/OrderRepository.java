@@ -17,5 +17,8 @@ public interface OrderRepository extends JpaRepository<Orders, Integer> {
     Page<Orders> findByClientIdEqualsAndClosedIsTrue(Integer clientId, Pageable pageable);
     Page<Orders> findByMerchantIdEqualsAndClosedIsTrue(Integer merchantId, Pageable pageable);
     Page<Orders> findByClientIdEqualsAndClosedIsFalse(Integer clientId, Pageable pageable);
+    Page<Orders> findByMerchantIdEqualsAndClosedIsFalse(Integer merchantId, Pageable pageable);
     Page<Orders> findAllByClientIdContainingOrMerchantIdContainingAndClosedIsFalse(String clientId, String merchantId, Pageable pageable);
+
+    boolean existsByOrderNumber(int uniqueNumber);
 }

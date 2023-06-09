@@ -25,7 +25,7 @@ public class UserRequest {
     private String requestBody;
 
     @Column
-    private Date createdDate;
+    private final Date createdDate = new Date();
 
     @Column
     private Integer createdBy;

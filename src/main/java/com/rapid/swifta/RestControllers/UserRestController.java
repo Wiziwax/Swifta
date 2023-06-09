@@ -2,9 +2,9 @@ package com.rapid.swifta.RestControllers;
 
 
 import com.rapid.swifta.DTOs.RequestBodies.UserRequestBody;
+import com.rapid.swifta.DTOs.Responses.UserResponse;
 import com.rapid.swifta.Entities.Address;
 import com.rapid.swifta.Entities.User;
-import com.rapid.swifta.Services.FavouritesService;
 import com.rapid.swifta.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,17 +24,17 @@ public class UserRestController {
     }
 
     @GetMapping("getallbyrandom")
-    public Page<User> getAllByRandom(Pageable pageable){
+    public Page<UserResponse> getAllByRandom(Pageable pageable){
         return userService.getAllUsersByRandom(pageable);
     }
 
     @GetMapping("getall")
-    public Page<User> getAllUsers(Pageable pageable){
+    public Page<UserResponse> getAllUsers(Pageable pageable){
         return userService.getAllUsers(pageable);
     }
 
     @GetMapping("getbyfirstandlastname")
-    public Page<User> getByFirstAndLastName(@RequestBody User user, Pageable pageable){
+    public Page<UserResponse> getByFirstAndLastName(@RequestBody User user, Pageable pageable){
         return userService.findByFirstAndLastName(user.getFirstName(), user.getLastName(), pageable);
     }
 
@@ -59,20 +59,20 @@ public class UserRestController {
     }
 
     @GetMapping("getusersbylocationandroleid")
-    public Page<User> getMerchantByLocation(@RequestParam String location,
+    public Page<UserResponse> getMerchantByLocation(@RequestParam String location,
                                             Integer roleId,
                                             Pageable pageable){
         return userService.getMerchantByLocation(location, roleId, pageable);
     }
 
     @GetMapping("usersbylocationrandom")
-    public Page<User> findAllByRandom(@RequestParam String location,
+    public Page<UserResponse> findAllByRandom(@RequestParam String location,
                                       @RequestParam Integer roleId, Pageable pageable){
         return userService.findAllLocationRandom(location, roleId, pageable);
     }
 
     @GetMapping("searchoffers")
-    public Page<User> searchUser(@RequestParam String location, @RequestParam int serviceType, Pageable pageable){
+    public Page<UserResponse> searchUser(@RequestParam String location, @RequestParam int serviceType, Pageable pageable){
         return userService.searchUsers(location, serviceType, pageable);
     }
 

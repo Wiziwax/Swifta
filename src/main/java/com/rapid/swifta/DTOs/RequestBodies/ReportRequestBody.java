@@ -7,6 +7,7 @@ import lombok.Data;
 public class ReportRequestBody {
 
     private Integer reportedUser;
+    private Integer createdBy;
     private String reportBody;
     private EnumReportType enumReportType;
 

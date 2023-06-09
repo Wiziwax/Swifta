@@ -1,7 +1,7 @@
 package com.rapid.swifta.RestControllers;
 
 
-import com.rapid.swifta.Entities.Orders;
+import com.rapid.swifta.DTOs.Responses.OrdersResponse;
 import com.rapid.swifta.Services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,9 +18,8 @@ public class OrderRestControllers {
     private OrderService orderService;
 
     @GetMapping("getallorders")
-    Page<Orders> getAllOrders (Pageable pageable){
+    Page<OrdersResponse> getAllOrders (Pageable pageable){
         return orderService.getAllOrders(pageable);
     }
-
 
 }

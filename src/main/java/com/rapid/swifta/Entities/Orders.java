@@ -75,6 +75,5 @@ public class Orders {
     private String orderComment;
 
     @Column
-    private float orderRating;
-
+    private Integer orderNumber;
 }

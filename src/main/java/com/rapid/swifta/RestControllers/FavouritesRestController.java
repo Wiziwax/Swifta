@@ -1,7 +1,8 @@
 package com.rapid.swifta.RestControllers;
 
+import com.rapid.swifta.DTOs.RequestBodies.FavouritesRequestBody;
+import com.rapid.swifta.DTOs.Responses.UserResponse;
 import com.rapid.swifta.Entities.Favourites;
-import com.rapid.swifta.Entities.User;
 import com.rapid.swifta.Repositories.UserRepository;
 import com.rapid.swifta.Services.FavouritesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,16 +17,15 @@ public class FavouritesRestController {
     @Autowired
     private FavouritesService favouritesService;
 
-    @Autowired
-    private UserRepository userRepository;
+
 
     @PostMapping("add")
-    public Favourites createFavourites(@RequestBody Favourites favourites){
+    public Favourites createFavourites(@RequestBody FavouritesRequestBody favourites){
         return favouritesService.createFavourites(favourites);
     }
 
     @GetMapping("getall")
-    public Page<User> getAll(@RequestParam Integer userId, Pageable pageable){
+    public Page<UserResponse> getAll(@RequestParam Integer userId, Pageable pageable){
         return favouritesService.getAllFavourites(userId, pageable);
     }
 

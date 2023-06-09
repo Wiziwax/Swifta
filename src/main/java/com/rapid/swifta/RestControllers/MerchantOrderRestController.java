@@ -1,6 +1,7 @@
 package com.rapid.swifta.RestControllers;
 
 
+import com.rapid.swifta.DTOs.Responses.OrdersResponse;
 import com.rapid.swifta.Entities.Orders;
 import com.rapid.swifta.Services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,22 +18,22 @@ public class MerchantOrderRestController {
     private OrderService orderService;
 
     @GetMapping("viewallorders")
-    public Page<Orders> viewAllOrders(@RequestParam Integer merchantId, Pageable pageable){
+    public Page<OrdersResponse> viewAllOrders(@RequestParam Integer merchantId, Pageable pageable){
         return orderService.viewOrdersByMerchantId(merchantId, pageable);
     }
 
     @GetMapping("viewallopenorders")
-    public Page<Orders> getAllOpenOrders(@RequestParam Integer merchantId, Pageable pageable){
-        return orderService.getAllOpen(merchantId, pageable);
+    public Page<OrdersResponse> getAllOpenOrders(@RequestParam Integer merchantId, Pageable pageable){
+        return orderService.getAllOpenMerchant(merchantId, pageable);
     }
 
     @GetMapping("viewallclosedorders")
-    public Page<Orders> getAllClosedOrders(@RequestParam Integer merchantId, Pageable pageable){
+    public Page<OrdersResponse> getAllClosedOrders(@RequestParam Integer merchantId, Pageable pageable){
         return orderService.getAllClosedMerchant(merchantId, pageable);
     }
 
     @PutMapping("acceptorder")
-    public Orders acceptOrderMerchant(@RequestBody Orders orders){
+    public OrdersResponse acceptOrderMerchant(@RequestBody Orders orders){
         return orderService.acceptOrderMerchant(orders);
     }
 

@@ -27,7 +27,7 @@ public class Report {
 
     @CreatedDate
     @Column(updatable = false)
-    private Date createdDate;
+    private final Date createdDate= new Date();
 
     @Column
     private Integer reportedUser;
@@ -40,8 +40,8 @@ public class Report {
     private EnumReportType enumReportType;
 
     @Column
-    private boolean isTreated;
+    private boolean treated;
 
     @Column
-    private boolean isIgnored;
+    private boolean ignored;
 }

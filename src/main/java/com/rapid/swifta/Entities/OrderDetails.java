@@ -30,6 +30,9 @@ public class OrderDetails {
     private BigDecimal pricePerUnit;
 
     @Column
+    private Integer orderNumber;
+
+    @Column
     private BigDecimal totalPrice;
 
 

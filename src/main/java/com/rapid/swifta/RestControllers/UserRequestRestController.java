@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/userrequest")
+@RequestMapping("api/request")
 public class UserRequestRestController {
 
     @Autowired
@@ -20,8 +20,8 @@ public class UserRequestRestController {
     }
 
     @GetMapping("getbyid")
-    public UserRequest getUserRequestById(@RequestParam Integer userRequestId){
-        return userRequestService.getUserRequestById(userRequestId);
+    public UserRequest getUserRequestById(@RequestParam Integer requestId){
+        return userRequestService.getUserRequestById(requestId);
     }
 
     @PostMapping("create")
@@ -29,8 +29,5 @@ public class UserRequestRestController {
         return userRequestService.createUserRequest(userRequest);
     }
 
-    @PutMapping("update")
-    public UserRequest editRequest(@RequestBody UserRequest userRequest){
-        return userRequestService.updateUserRequest(userRequest);
-    }
+
 }
