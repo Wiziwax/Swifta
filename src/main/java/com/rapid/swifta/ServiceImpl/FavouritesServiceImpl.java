@@ -23,11 +23,12 @@ public class FavouritesServiceImpl implements FavouritesService {
     @Autowired
     private FavouritesRepository favouritesRepository;
 
-    @Autowired
-    private ServiceTypeRepository serviceTypeRepository;
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserServiceImpl userService;
 
     @Override
     public Favourites createFavourites(FavouritesRequestBody favourites) {
@@ -64,25 +65,8 @@ public class FavouritesServiceImpl implements FavouritesService {
         }
 
         Page<User> userFavouriteList =  userRepository.findAll(favouritesLists, pageable);
-        return userFavouriteList.map(user -> UserResponse.builder()
-                .firstName(user.getFirstName())
-                .middleName(user.getMiddleName())
-                .lastName(user.getLastName())
-                .username(user.getUsername())
-                .createdDate(user.getCreatedDate())
-                .mobile(user.getMobile())
-                .image(user.getImage())
-                .address(user.getAddress().getHouseNumber()+ ", "+
-                        user.getAddress().getStreetName()+", "+
-                        user.getAddress().getArea()+", "+
-                        user.getAddress().getState()+", "+
-                        user.getAddress().getCountry())
-                .serviceType(serviceTypeList(user.getServiceType()))
-                .role(user.getRole())
-                .rating(user.getRating())
-                .jobCount(user.getJobCount())
-                .rateCount(user.getRateCount())
-                .build());
+        return userService.userResponsesPage(userFavouriteList);
+
     }
 
     public List<String> serviceTypeList(List<ServiceType> serviceTypes){

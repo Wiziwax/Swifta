@@ -158,6 +158,7 @@ public class UserServiceImpl implements UserService {
 
     public Page<UserResponse> userResponsesPage(Page<User> users){
         return users.map(user -> UserResponse.builder()
+                .userId(user.getUserId())
                 .firstName(user.getFirstName())
                 .middleName(user.getMiddleName())
                 .lastName(user.getLastName())

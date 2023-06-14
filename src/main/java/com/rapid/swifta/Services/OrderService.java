@@ -1,6 +1,7 @@
 package com.rapid.swifta.Services;
 
 
+import com.rapid.swifta.DTOs.RequestBodies.OrdersRequestBody;
 import com.rapid.swifta.DTOs.Responses.OrdersResponse;
 import com.rapid.swifta.Entities.Orders;
 import com.rapid.swifta.Enums.EnumOrderProgress;
@@ -9,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface OrderService {
 
-    Orders createOrder(Orders order);
+    Orders createOrder(OrdersRequestBody order);
     Page<OrdersResponse> getAllOrders(Pageable pageable);
     Page<OrdersResponse> viewOrdersByMerchantId(Integer merchantId, Pageable pageable);
     Page<OrdersResponse> viewOrdersByClientId(Integer clientId, Pageable pageable);

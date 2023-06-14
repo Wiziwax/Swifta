@@ -59,20 +59,21 @@ public class UserRestController {
     }
 
     @GetMapping("getusersbylocationandroleid")
-    public Page<UserResponse> getMerchantByLocation(@RequestParam String location,
-                                            Integer roleId,
+    public Page<UserResponse> getMerchantByLocation(@RequestParam(required = false) String location,
+                                            @RequestParam(required = false) Integer roleId,
                                             Pageable pageable){
         return userService.getMerchantByLocation(location, roleId, pageable);
     }
 
     @GetMapping("usersbylocationrandom")
-    public Page<UserResponse> findAllByRandom(@RequestParam String location,
+    public Page<UserResponse> findAllByRandom(@RequestParam(required = false) String location,
                                       @RequestParam Integer roleId, Pageable pageable){
         return userService.findAllLocationRandom(location, roleId, pageable);
     }
 
     @GetMapping("searchoffers")
-    public Page<UserResponse> searchUser(@RequestParam String location, @RequestParam int serviceType, Pageable pageable){
+    public Page<UserResponse> searchUser(@RequestParam(required = false) String location,
+                                         @RequestParam (required = false) int serviceType, Pageable pageable){
         return userService.searchUsers(location, serviceType, pageable);
     }
 

@@ -11,6 +11,7 @@ import java.util.List;
 @Builder
 public class UserResponse {
 
+    private Integer userId;
     private String firstName;
     private String middleName;
     private String lastName;

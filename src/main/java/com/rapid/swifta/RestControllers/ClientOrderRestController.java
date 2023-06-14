@@ -1,6 +1,7 @@
 package com.rapid.swifta.RestControllers;
 
 
+import com.rapid.swifta.DTOs.RequestBodies.OrdersRequestBody;
 import com.rapid.swifta.DTOs.Responses.OrdersResponse;
 import com.rapid.swifta.Entities.Orders;
 import com.rapid.swifta.Enums.EnumOrderProgress;
@@ -18,7 +19,7 @@ public class ClientOrderRestController {
     private OrderService orderService;
 
     @PostMapping("createorder")
-    public Orders createOrder(@RequestBody Orders orders){
+    public Orders createOrder(@RequestBody OrdersRequestBody orders){
         return orderService.createOrder(orders);
     }
 

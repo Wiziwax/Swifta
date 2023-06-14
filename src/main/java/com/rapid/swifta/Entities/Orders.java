@@ -13,6 +13,7 @@ import org.springframework.data.annotation.CreatedDate;
 import java.time.LocalTime;
 import java.util.Date;
 
+import static jakarta.persistence.FetchType.LAZY;
 import static java.time.LocalTime.now;
 
 @Data
@@ -67,7 +68,7 @@ public class Orders {
 
     private boolean hasMerchantAccepted;
 
-    @OneToOne(cascade = {CascadeType.ALL, CascadeType.PERSIST})
+    @OneToOne(cascade = {CascadeType.ALL, CascadeType.PERSIST},  fetch = LAZY)
     @JoinColumn(name = "order_details_id")
     private OrderDetails orderDetails ;
 

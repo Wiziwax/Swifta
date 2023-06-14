@@ -1,6 +1,7 @@
 package com.rapid.swifta.ServiceImpl;
 
 
+import com.rapid.swifta.DTOs.RequestBodies.OrdersRequestBody;
 import com.rapid.swifta.DTOs.Responses.OrdersResponse;
 import com.rapid.swifta.Entities.Orders;
 import com.rapid.swifta.Enums.EnumOrderProgress;
@@ -24,12 +25,12 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private AddressRepository addressRepository;
 
-    @Autowired
-    private OrderDetailsRepository orderDetailsRepository;
-
     @Override
-    public Orders createOrder(Orders order) {
+    public Orders createOrder(OrdersRequestBody ordersRequestBody) {
 
+
+        Orders order = new Orders();
+        dataTransferOrderRequest(order, ordersRequestBody);
         addressRepository.save(order.getOrderAddress());
         //Todo set the Payment aside so you can enable and disable at will
         order.setEnumOrderProgress(EnumOrderProgress.INITIATED);
@@ -37,6 +38,7 @@ public class OrderServiceImpl implements OrderService {
         order.setDeliveryTime(order.getDeliveryTime());
         order.setPaymentMethod(order.getPaymentMethod());
         order.setMerchantId(order.getMerchantId());
+
         int uniqueNumber = generateUniqueNumber();
         order.setOrderNumber(uniqueNumber);
 
@@ -46,7 +48,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
 
-        orderDetailsRepository.save(order.getOrderDetails());
+//        orderDetailsRepository.save(order.getOrderDetails());
         return orderRepository.save(order);
     }
 
@@ -169,6 +171,16 @@ public class OrderServiceImpl implements OrderService {
                 .orderDetails(existingOrder.getOrderDetails())
                 .orderComment(existingOrder.getOrderComment()).build();
 
+    }
+
+    public void dataTransferOrderRequest(Orders orders, OrdersRequestBody ordersRequestBody){
+        orders.setClientId(ordersRequestBody.getClientId());
+        orders.setMerchantId(ordersRequestBody.getMerchantId());
+        orders.setPaymentMethod(ordersRequestBody.getPaymentMethod());
+        orders.setOneOff(ordersRequestBody.isOneOff());
+
+        orders.setOrderDetails(ordersRequestBody.getOrderDetails());
+        orders.setOrderAddress(ordersRequestBody.getOrderAddress());
     }
 
     private int generateUniqueNumber() {
