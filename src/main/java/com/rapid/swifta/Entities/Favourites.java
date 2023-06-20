@@ -13,7 +13,7 @@ import lombok.*;
 public class Favourites {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer favouritesId;
 
     @Column

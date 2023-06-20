@@ -1,20 +1,29 @@
 package com.rapid.swifta.ServiceImpl;
 
-
+import com.rapid.swifta.DTOs.RequestBodies.OrderBroadcastBody;
 import com.rapid.swifta.DTOs.RequestBodies.OrdersRequestBody;
 import com.rapid.swifta.DTOs.Responses.OrdersResponse;
+import com.rapid.swifta.Entities.Address;
+import com.rapid.swifta.Entities.User;
+import com.rapid.swifta.Entities.UserNotifications;
 import com.rapid.swifta.Entities.Orders;
 import com.rapid.swifta.Enums.EnumOrderProgress;
 import com.rapid.swifta.Exceptions.ResourceNotFoundException;
 import com.rapid.swifta.Repositories.AddressRepository;
-import com.rapid.swifta.Repositories.OrderDetailsRepository;
+import com.rapid.swifta.Repositories.NotificationRepository;
 import com.rapid.swifta.Repositories.OrderRepository;
+import com.rapid.swifta.Repositories.UserRepository;
 import com.rapid.swifta.Services.OrderService;
+import com.rapid.swifta.Utils.NotificationBodyString;
 import com.rapid.swifta.Utils.UniqueNumberGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -25,13 +34,21 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private AddressRepository addressRepository;
 
+    @Autowired
+    private NotificationRepository notificationRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private UserServiceImpl userService;
+
     @Override
     public Orders createOrder(OrdersRequestBody ordersRequestBody) {
 
 
         Orders order = new Orders();
-        dataTransferOrderRequest(order, ordersRequestBody);
-        addressRepository.save(order.getOrderAddress());
+//        addressRepository.save(order.getOrderAddress());
         //Todo set the Payment aside so you can enable and disable at will
         order.setEnumOrderProgress(EnumOrderProgress.INITIATED);
         order.setDeliveryDate(order.getDeliveryDate());
@@ -39,15 +56,20 @@ public class OrderServiceImpl implements OrderService {
         order.setPaymentMethod(order.getPaymentMethod());
         order.setMerchantId(order.getMerchantId());
 
+        UserNotifications userNotifications = new UserNotifications();
+        dataTransferOrderRequest(order, ordersRequestBody, userNotifications);
+
         int uniqueNumber = generateUniqueNumber();
         order.setOrderNumber(uniqueNumber);
+        userNotifications.setOrderNumber(uniqueNumber);
 
         while (isUnique(uniqueNumber)) {
             uniqueNumber = generateUniqueNumber();
             order.setOrderNumber(uniqueNumber);
+            userNotifications.setOrderNumber(uniqueNumber);
         }
 
-
+        notificationRepository.save(userNotifications);
 //        orderDetailsRepository.save(order.getOrderDetails());
         return orderRepository.save(order);
     }
@@ -88,7 +110,6 @@ public class OrderServiceImpl implements OrderService {
         Page<Orders> ordersPage= orderRepository.findByClientIdEqualsAndClosedIsFalse(userId,  pageable);
         return dataTransferPage(ordersPage);
     }
-
 
     @Override
     public Page<OrdersResponse> getAllOpenMerchant(Integer userId, Pageable pageable) {
@@ -132,6 +153,69 @@ public class OrderServiceImpl implements OrderService {
         return dataTransfer(existingOrder);
     }
 
+    @Override
+    public String createBroadcast(String country, String state, String area, String streetName,
+                                  Integer serviceType,
+                                  OrderBroadcastBody orderBroadcastBody, Pageable pageable) {
+        Orders orders = new Orders();
+        orders.setClientId(orderBroadcastBody.getClientId());//TODO Change to Signed In User
+        orders.setPaymentMethod(orderBroadcastBody.getPaymentMethod());
+        orders.setOrderAddress(orderBroadcastBody.getOrderAddress());
+        orders.setOneOff(orderBroadcastBody.getIsOneOff());
+        orders.setOrderDetails(orderBroadcastBody.getOrderDetails());
+        orders.setOrderDescription(orderBroadcastBody.getOrderDescription());
+
+        orders.setEnumOrderProgress(EnumOrderProgress.INITIATED);
+        orders.setDeliveryDate(orders.getDeliveryDate());
+        orders.setDeliveryTime(orders.getDeliveryTime());
+        orders.setPaymentMethod(orders.getPaymentMethod());
+        orders.setMerchantId(orders.getMerchantId());
+
+
+
+
+        int uniqueNumber = generateUniqueNumber();
+        orders.setOrderNumber(uniqueNumber);
+
+            while (isUnique(uniqueNumber)) {
+                uniqueNumber = generateUniqueNumber();
+                orders.setOrderNumber(uniqueNumber);
+            }
+
+
+        List<Address> addressList = addressRepository.findAllByQueryingColumns(
+                country,
+                state,
+                area,
+                streetName);
+        List<Integer> addressIds = new ArrayList<>();
+        for(Address address: addressList){
+            addressIds.add(address.getAddressId());
+        }
+        List<Integer>testService= new ArrayList<>(Arrays.asList(1,2,3,4,107));
+        List<User> broadcastUsers =
+                userRepository.findListByServiceTypeAndLocation(addressIds,testService );
+
+        for(User user: broadcastUsers){
+            UserNotifications notifications = new UserNotifications();
+            notifications.setCreatedBy(orderBroadcastBody.getClientId());//TODO Change to Signed In User
+            notifications.setRead(false);
+            notifications.setOrderNumber(uniqueNumber);
+            notifications.setUserId(user.getUserId());
+            notifications.setNotificationBody(
+                    NotificationBodyString.NOTIFICATION_BODY(orderBroadcastBody.getClientId(),
+                                                            orderBroadcastBody.getOrderDescription(),
+                                                            uniqueNumber,
+                                                            user.getUserId()));
+            notifications.setOrderNumber(uniqueNumber);
+
+            notificationRepository.save(notifications);
+        }
+        orderRepository.save(orders);
+
+        return "Success";
+    }
+
 
     public Page<OrdersResponse> dataTransferPage(Page<Orders> ordersPage){
 
@@ -145,6 +229,7 @@ public class OrderServiceImpl implements OrderService {
                 .deliveryTime(orders.getDeliveryTime())
                 .paymentMethod(orders.getPaymentMethod())
                 .closed(orders.isClosed())
+                .orderDescription(orders.getOrderDescription())
                 .isOneOff(orders.isOneOff())
                 .merchantId(orders.getMerchantId())
                 .hasMerchantAccepted(orders.isHasMerchantAccepted())
@@ -152,7 +237,6 @@ public class OrderServiceImpl implements OrderService {
                 .orderComment(orders.getOrderComment())
                 .build());
     }
-
 
     public OrdersResponse dataTransfer(Orders existingOrder){
         return OrdersResponse.builder()
@@ -162,6 +246,7 @@ public class OrderServiceImpl implements OrderService {
                 .orderDate(existingOrder.getOrderDate())
                 .deliveryDate(existingOrder.getDeliveryDate())
                 .orderTime(existingOrder.getOrderTime())
+                .orderDescription(existingOrder.getOrderDescription())
                 .deliveryTime(existingOrder.getDeliveryTime())
                 .paymentMethod(existingOrder.getPaymentMethod())
                 .isOneOff(existingOrder.isOneOff())
@@ -173,11 +258,22 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
-    public void dataTransferOrderRequest(Orders orders, OrdersRequestBody ordersRequestBody){
+    public void dataTransferOrderRequest(Orders orders, OrdersRequestBody ordersRequestBody, UserNotifications userNotifications){
         orders.setClientId(ordersRequestBody.getClientId());
         orders.setMerchantId(ordersRequestBody.getMerchantId());
         orders.setPaymentMethod(ordersRequestBody.getPaymentMethod());
         orders.setOneOff(ordersRequestBody.isOneOff());
+        orders.setOrderDescription(orders.getOrderDescription());
+
+        //////NOTIFICATIONS NOTIFICATIONS NOTIFICATIONS NOTIFICATIONS NOTIFICATIONS NOTIFICATIONS////////
+        userNotifications.setUserId(ordersRequestBody.getMerchantId());//TODO Change to Signed In User
+        userNotifications.setNotificationBody(NotificationBodyString.NOTIFICATION_BODY(
+                ordersRequestBody.getClientId(),
+                ordersRequestBody.getOrderDescription(),
+                orders.getOrderNumber(),
+                ordersRequestBody.getMerchantId()));
+        userNotifications.setCreatedBy(ordersRequestBody.getClientId());
+        //////////////////////////////////////////////////////////////////////////////////////////////
 
         orders.setOrderDetails(ordersRequestBody.getOrderDetails());
         orders.setOrderAddress(ordersRequestBody.getOrderAddress());

@@ -13,7 +13,7 @@ import lombok.*;
 public class ServiceType {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer serviceTypeId;
 
     @Column

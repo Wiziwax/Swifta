@@ -1,6 +1,7 @@
 package com.rapid.swifta.RestControllers;
 
 
+import com.rapid.swifta.DTOs.RequestBodies.OrderBroadcastBody;
 import com.rapid.swifta.DTOs.RequestBodies.OrdersRequestBody;
 import com.rapid.swifta.DTOs.Responses.OrdersResponse;
 import com.rapid.swifta.Entities.Orders;
@@ -54,5 +55,15 @@ public class ClientOrderRestController {
        return orderService.editOrderClient(orders);
     }
 
+
+    @PostMapping("orderbroadcast")
+    public String createBroadcast(@RequestParam String country,
+            @RequestParam String state,
+            @RequestParam String area,
+            @RequestParam String streetName,
+            @RequestParam Integer serviceType,
+                                  @RequestBody OrderBroadcastBody orderBroadcastBody, Pageable pageable){
+        return orderService.createBroadcast(country,state,area,streetName,serviceType,orderBroadcastBody, pageable);
+    }
 
 }

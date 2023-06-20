@@ -25,7 +25,7 @@ import static java.time.LocalTime.now;
 public class Orders {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer orderId;
 
     @Column
@@ -77,4 +77,7 @@ public class Orders {
 
     @Column
     private Integer orderNumber;
+
+    @Column
+    private String orderDescription;
 }

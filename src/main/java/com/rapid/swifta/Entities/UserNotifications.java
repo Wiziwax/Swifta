@@ -1,6 +1,6 @@
 package com.rapid.swifta.Entities;
 
-import com.rapid.swifta.Enums.EnumReportType;
+import com.rapid.swifta.Enums.EnumNotificationStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,32 +16,28 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Report {
+public class UserNotifications {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Integer reportId;
+    private Integer notificationId;
+
+    @Column
+    private Integer userId;
+
+    @Column
+    private String notificationBody;
+
+    @Column
+    @CreatedDate
+    private final Date createdDate=new Date();
+
+    @Column
+    private Integer orderNumber;
 
     @Column
     private Integer createdBy;
 
-    @CreatedDate
-    @Column(updatable = false)
-    private final Date createdDate= new Date();
-
     @Column
-    private Integer reportedUser;
-
-    @Column
-    private String reportBody;
-
-    @Column
-    @Enumerated(EnumType.STRING)
-    private EnumReportType enumReportType;
-
-    @Column
-    private boolean treated;
-
-    @Column
-    private boolean ignored;
+    private boolean isRead;
 }

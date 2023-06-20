@@ -1,6 +1,7 @@
 package com.rapid.swifta.Services;
 
 
+import com.rapid.swifta.DTOs.RequestBodies.OrderBroadcastBody;
 import com.rapid.swifta.DTOs.RequestBodies.OrdersRequestBody;
 import com.rapid.swifta.DTOs.Responses.OrdersResponse;
 import com.rapid.swifta.Entities.Orders;
@@ -23,5 +24,5 @@ public interface OrderService {
     OrdersResponse acceptOrderMerchant(Orders order);
     void deleteByIdClient(Integer orderId);
     OrdersResponse editOrderClient(Orders orders);
-
+    String createBroadcast(String country, String state, String area, String streetName, Integer serviceType, OrderBroadcastBody orderBroadcastBody, Pageable pageable);
 }

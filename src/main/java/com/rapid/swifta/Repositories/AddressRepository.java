@@ -19,4 +19,10 @@ public interface AddressRepository extends JpaRepository<Address, Integer> {
 
     @Query(nativeQuery = true, value = "Select * from address where area like %?1% or country like %?1% or street_name like %?1% order by rand()")
     Page<Address> findAllByRandomAndLocation(String query, Pageable pageable);
+
+    @Query(nativeQuery = true, value = "Select * from address where area like %?1% or country like %?1% or street_name like %?1%")
+    List<Address> findAllByQuery(String query);
+
+    @Query(nativeQuery = true, value = "Select * from address where country like %?1%  or  (country like %?1% and state like %?2%) or (country like %?1% and state like %?2% and area like %?3%) or  (country like %?1% and state like %?2% and area like %?3% and street_name like %?4%)")
+    List<Address> findAllByQueryingColumns(String country, String state, String area, String street);
 }

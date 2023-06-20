@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class Statistics {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer statsId;
 
     @Column

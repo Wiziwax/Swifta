@@ -5,17 +5,16 @@ import com.rapid.swifta.Entities.OrderDetails;
 import com.rapid.swifta.Enums.EnumPayment;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
-public class OrdersRequestBody {
+public class OrderBroadcastBody {
 
-    private Integer orderId;
     private Integer clientId;
-    private Integer merchantId;
     private EnumPayment paymentMethod;
-    private String orderDescription;
-    private boolean isOneOff;
     private Address orderAddress;
+    private List<Integer> serviceType;
+    private Boolean isOneOff;
     private OrderDetails orderDetails;
-    private String orderComment;
-
+    private String orderDescription;
 }

@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class Activity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer activityId;
 
     public Integer createdBy;

@@ -28,5 +28,6 @@ public class OrdersResponse {
     private boolean hasMerchantAccepted;
     private OrderDetails orderDetails;
     private String orderComment;
+    private String orderDescription;
 
 }

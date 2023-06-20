@@ -7,9 +7,7 @@ import com.rapid.swifta.Entities.Address;
 import com.rapid.swifta.Entities.ServiceType;
 import com.rapid.swifta.Entities.User;
 import com.rapid.swifta.Exceptions.ResourceNotFoundException;
-import com.rapid.swifta.Repositories.AddressRepository;
-import com.rapid.swifta.Repositories.ServiceTypeRepository;
-import com.rapid.swifta.Repositories.UserRepository;
+import com.rapid.swifta.Repositories.*;
 import com.rapid.swifta.Services.UserService;
 import com.rapid.swifta.UserProps.Role;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -31,6 +30,12 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private ServiceTypeRepository serviceTypeRepository;
+
+    @Autowired
+    private OrderRepository orderRepository;
+
+    @Autowired
+    private NotificationRepository notificationRepository;
 
     @Override
     public Page<UserResponse> getAllUsersByRandom(Pageable pageable) {
@@ -114,6 +119,12 @@ public class UserServiceImpl implements UserService {
         return userResponsesPage(users);
     }
 
+
+//    public List<User> searchUserssssss(String location, int serviceType, Pageable pageable) {
+//        List<Integer> addressIds = findByLocation(location);
+//        List<Integer>testService= new ArrayList<>(Arrays.asList(1,2,3,4));
+//        return userRepository.findListByServiceTypeAndLocation(addressIds, testService);
+//    }
     @Override
     public Page<UserResponse> findByFirstAndLastName(String firstName, String lastName, Pageable pageable) {
         Page<User> userPage= userRepository.findAllByFirstNameContainingAndLastNameContaining(firstName, lastName, pageable);
@@ -202,4 +213,12 @@ public class UserServiceImpl implements UserService {
                 .isBusy(user.isBusy())
                 .verified(user.isVerified()).build();
     }
+
+//    private int generateUniqueNumber() {
+//        return UniqueNumberGenerator.generateUniqueNumberWithDigits(10);
+//    }
+//
+//    private boolean isUnique(int uniqueNumber){
+//        return orderRepository.existsByOrderNumber(uniqueNumber);
+//    }
 }

@@ -1,15 +1,19 @@
 package com.rapid.swifta.RestControllers;
 
 
+import com.rapid.swifta.DTOs.RequestBodies.OrderBroadcastBody;
 import com.rapid.swifta.DTOs.RequestBodies.UserRequestBody;
 import com.rapid.swifta.DTOs.Responses.UserResponse;
 import com.rapid.swifta.Entities.Address;
 import com.rapid.swifta.Entities.User;
+import com.rapid.swifta.ServiceImpl.UserServiceImpl;
 import com.rapid.swifta.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/user")
@@ -17,7 +21,8 @@ public class UserRestController {
 
     @Autowired
     private UserService userService;
-
+    @Autowired
+    private UserServiceImpl userServiceImpl;
     @PostMapping("create")
     public User createUser(@RequestBody UserRequestBody user){
         return userService.createUser(user);
@@ -73,7 +78,7 @@ public class UserRestController {
 
     @GetMapping("searchoffers")
     public Page<UserResponse> searchUser(@RequestParam(required = false) String location,
-                                         @RequestParam (required = false) int serviceType, Pageable pageable){
+                                         @RequestParam (required = false) Integer serviceType, Pageable pageable){
         return userService.searchUsers(location, serviceType, pageable);
     }
 
@@ -82,5 +87,10 @@ public class UserRestController {
                          @RequestParam int rating){
         return userService.rateUser(userId, rating);
     }
+
+//    @GetMapping("getthem")
+//    public List<User> searchUserss(@RequestBody OrderBroadcastBody orderBroadcastBody, Pageable pageable){
+//        return userServiceImpl.createBroadcast(orderBroadcastBody,  pageable);
+//    }
 
 }
