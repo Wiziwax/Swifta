@@ -1,14 +1,16 @@
 package com.rapid.swifta.Repositories;
 
+import com.querydsl.core.types.Predicate;
 import com.rapid.swifta.Entities.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
 import java.util.List;
 
-public interface UserRepository extends JpaRepository<User, Integer> {
+public interface UserRepository extends JpaRepository<User, Integer>, QuerydslPredicateExecutor<User> {
 
     @Query(nativeQuery = true, value = "SELECT * FROM user u  where u.address_user_id in (:digits) and u.role LIKE %:roleName% ORDER BY RAND()")
     Page<User> findAllLocationRandom(List<Integer> digits, String roleName, Pageable pageable);
@@ -28,5 +30,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query(nativeQuery = true, value = "SELECT * FROM User u where user_id in (:favouritesLists)")
     Page<User> findAll(List<Integer> favouritesLists, Pageable pageable);
 
-    Page<User> findAllByFirstNameContainingAndLastNameContaining(String firstName, String lastName, Pageable pageable);
+    Page<User> findAllByFirstNameAndLastName(Predicate predicate, Pageable pageable);
 }

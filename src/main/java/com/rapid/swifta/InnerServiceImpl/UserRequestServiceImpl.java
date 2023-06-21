@@ -1,9 +1,9 @@
-package com.rapid.swifta.ServiceImpl;
+package com.rapid.swifta.InnerServiceImpl;
 
 import com.rapid.swifta.Entities.UserRequest;
 import com.rapid.swifta.Exceptions.ResourceNotFoundException;
 import com.rapid.swifta.Repositories.UserRequestRepository;
-import com.rapid.swifta.Services.UserRequestService;
+import com.rapid.swifta.InnerService.UserRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -1,4 +1,4 @@
-package com.rapid.swifta.ServiceImpl;
+package com.rapid.swifta.InnerServiceImpl;
 
 import com.rapid.swifta.DTOs.RequestBodies.ReportRequestBody;
 import com.rapid.swifta.DTOs.Responses.ReportResponse;
@@ -6,7 +6,7 @@ import com.rapid.swifta.Entities.Report;
 import com.rapid.swifta.Exceptions.ResourceNotFoundException;
 import com.rapid.swifta.Repositories.ReportRepository;
 import com.rapid.swifta.Repositories.UserRepository;
-import com.rapid.swifta.Services.ReportService;
+import com.rapid.swifta.InnerService.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -1,4 +1,4 @@
-package com.rapid.swifta.Services;
+package com.rapid.swifta.InnerService;
 
 
 import com.rapid.swifta.DTOs.RequestBodies.OrderBroadcastBody;

@@ -1,19 +1,18 @@
 package com.rapid.swifta.RestControllers;
 
 
-import com.rapid.swifta.DTOs.RequestBodies.OrderBroadcastBody;
 import com.rapid.swifta.DTOs.RequestBodies.UserRequestBody;
 import com.rapid.swifta.DTOs.Responses.UserResponse;
 import com.rapid.swifta.Entities.Address;
 import com.rapid.swifta.Entities.User;
-import com.rapid.swifta.ServiceImpl.UserServiceImpl;
-import com.rapid.swifta.Services.UserService;
+import com.rapid.swifta.InnerServiceImpl.InnerTestServiceImpl;
+import com.rapid.swifta.InnerServiceImpl.UserServiceImpl;
+import com.rapid.swifta.InnerService.UserService;
+import com.rapid.swifta.OuterServiceClasses.UserOuterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("api/user")
@@ -21,6 +20,8 @@ public class UserRestController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserOuterService userOuterService;
     @Autowired
     private UserServiceImpl userServiceImpl;
     @PostMapping("create")
@@ -38,10 +39,10 @@ public class UserRestController {
         return userService.getAllUsers(pageable);
     }
 
-    @GetMapping("getbyfirstandlastname")
-    public Page<UserResponse> getByFirstAndLastName(@RequestBody User user, Pageable pageable){
-        return userService.findByFirstAndLastName(user.getFirstName(), user.getLastName(), pageable);
-    }
+//    @GetMapping("getbyfirstandlastname")
+//    public Page<User> getByFirstAndLastName(@RequestParam String firstName, Pageable pageable){
+//        return userOuterService.getByFirstNameAndLastName(firstName, pageable);
+//    }
 
     @DeleteMapping("delete")
     public void deleteUser(@RequestBody Integer userId, Pageable pageable){
@@ -54,7 +55,7 @@ public class UserRestController {
     }
 
     @GetMapping("getuserbyid")
-    public User getUserById(@RequestParam Integer userId){
+    public UserResponse getUserById(@RequestParam Integer userId){
         return userService.getUserById(userId);
     }
 
@@ -63,11 +64,18 @@ public class UserRestController {
         return userService.updateUser(user);
     }
 
-    @GetMapping("getusersbylocationandroleid")
+    @GetMapping("getmerchantsbylocationandroleid")
     public Page<UserResponse> getMerchantByLocation(@RequestParam(required = false) String location,
                                             @RequestParam(required = false) Integer roleId,
                                             Pageable pageable){
         return userService.getMerchantByLocation(location, roleId, pageable);
+    }
+
+
+    @GetMapping("getmerchantsbylocation")
+    public Page<UserResponse> getMerchantByLocation(@RequestParam(required = false) String location,
+                                                    Pageable pageable){
+        return userService.getMerchantByLocation(location, 1, pageable);
     }
 
     @GetMapping("usersbylocationrandom")
@@ -88,9 +96,6 @@ public class UserRestController {
         return userService.rateUser(userId, rating);
     }
 
-//    @GetMapping("getthem")
-//    public List<User> searchUserss(@RequestBody OrderBroadcastBody orderBroadcastBody, Pageable pageable){
-//        return userServiceImpl.createBroadcast(orderBroadcastBody,  pageable);
-//    }
+
 
 }

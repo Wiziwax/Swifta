@@ -5,7 +5,7 @@ import com.rapid.swifta.DTOs.RequestBodies.ReportRequestBody;
 import com.rapid.swifta.DTOs.RequestBodies.ReportUpdateBody;
 import com.rapid.swifta.DTOs.Responses.ReportResponse;
 import com.rapid.swifta.Entities.Report;
-import com.rapid.swifta.Services.ReportService;
+import com.rapid.swifta.InnerService.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

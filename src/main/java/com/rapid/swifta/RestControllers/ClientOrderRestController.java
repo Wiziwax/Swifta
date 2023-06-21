@@ -6,7 +6,7 @@ import com.rapid.swifta.DTOs.RequestBodies.OrdersRequestBody;
 import com.rapid.swifta.DTOs.Responses.OrdersResponse;
 import com.rapid.swifta.Entities.Orders;
 import com.rapid.swifta.Enums.EnumOrderProgress;
-import com.rapid.swifta.Services.OrderService;
+import com.rapid.swifta.InnerService.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

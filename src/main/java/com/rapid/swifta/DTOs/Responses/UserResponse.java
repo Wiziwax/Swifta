@@ -22,11 +22,12 @@ public class UserResponse {
     private String image;
     private String address;
     private List<String> serviceType;
+    private String jobDescription;
     private Role role;
     private float rating;
     private int jobCount;
+    private boolean isFavourite;
     private int rateCount;
     private boolean isBusy;
     private boolean verified;
-
 }

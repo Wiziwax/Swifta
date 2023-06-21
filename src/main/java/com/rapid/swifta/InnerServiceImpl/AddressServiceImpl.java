@@ -1,10 +1,10 @@
-package com.rapid.swifta.ServiceImpl;
+package com.rapid.swifta.InnerServiceImpl;
 
 
 import com.rapid.swifta.Entities.Address;
 import com.rapid.swifta.Exceptions.ResourceNotFoundException;
 import com.rapid.swifta.Repositories.AddressRepository;
-import com.rapid.swifta.Services.AddressService;
+import com.rapid.swifta.InnerService.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

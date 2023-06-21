@@ -1,4 +1,4 @@
-package com.rapid.swifta.ServiceImpl;
+package com.rapid.swifta.InnerServiceImpl;
 
 import com.rapid.swifta.DTOs.RequestBodies.OrderBroadcastBody;
 import com.rapid.swifta.DTOs.RequestBodies.OrdersRequestBody;
@@ -13,7 +13,7 @@ import com.rapid.swifta.Repositories.AddressRepository;
 import com.rapid.swifta.Repositories.NotificationRepository;
 import com.rapid.swifta.Repositories.OrderRepository;
 import com.rapid.swifta.Repositories.UserRepository;
-import com.rapid.swifta.Services.OrderService;
+import com.rapid.swifta.InnerService.OrderService;
 import com.rapid.swifta.Utils.NotificationBodyString;
 import com.rapid.swifta.Utils.UniqueNumberGenerator;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -58,9 +58,6 @@ public class User {
         @Column(name = "created_at", nullable = false, updatable = false)
         private Timestamp createdDate;
 
-        @Column
-        private boolean deleted=false;
-
         @Column(nullable = false)
         @NotNull(message = "Please enter your mobile number")
         private String mobile;
@@ -85,6 +82,9 @@ public class User {
 
         @Enumerated(EnumType.STRING)
         private Role role;
+
+        @Column
+        private String jobDescription;
 
         @Column
         private float rating;

@@ -1,14 +1,17 @@
-package com.rapid.swifta.ServiceImpl;
+package com.rapid.swifta.InnerServiceImpl;
 
 
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Predicate;
 import com.rapid.swifta.DTOs.RequestBodies.UserRequestBody;
 import com.rapid.swifta.DTOs.Responses.UserResponse;
 import com.rapid.swifta.Entities.Address;
+import com.rapid.swifta.Entities.QUser;
 import com.rapid.swifta.Entities.ServiceType;
 import com.rapid.swifta.Entities.User;
 import com.rapid.swifta.Exceptions.ResourceNotFoundException;
 import com.rapid.swifta.Repositories.*;
-import com.rapid.swifta.Services.UserService;
+import com.rapid.swifta.InnerService.UserService;
 import com.rapid.swifta.UserProps.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,7 +19,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -89,18 +91,39 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserById(Integer userId) {
+    public UserResponse getUserById(Integer userId) {
+        User user = userRepository.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User with id " + userId + " not found"));
+        return userResponse(user);
+    }
+
+    public User findUserByIdMethod(Integer userId){
         return userRepository.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User with id " + userId + " not found"));
     }
 
     @Override
     public User updateUser(User user) {
-        User existingUser = getUserById(user.getUserId());
+        User existingUser = findUserByIdMethod(user.getUserId());
         existingUser.setFirstName(user.getFirstName());
         existingUser.setLastName(user.getLastName());
         existingUser.setMiddleName(user.getMiddleName());
         return userRepository.save(user);
     }
+
+    @Override
+    public Page<User> getMerchants(Predicate predicate, Pageable pageable) {
+        return null;
+    }
+
+//    @Override
+//    public Page<User> getMerchants(Predicate predicate, Pageable pageable) {
+//
+//        QUser qUser = QUser.user;
+//
+//        BooleanBuilder booleanBuilder = new BooleanBuilder();
+//        booleanBuilder.and(qUser.role.eq(Role.fromNumericValue(3)));
+//
+//
+//    }
 
     public List<Integer> findByLocation(String location) {
         List <Address> addressList = addressRepository.findByStreetNameContainingOrAreaContainingOrStateContainingOrCountryContaining(location, location, location, location);
@@ -126,10 +149,17 @@ public class UserServiceImpl implements UserService {
 //        return userRepository.findListByServiceTypeAndLocation(addressIds, testService);
 //    }
     @Override
-    public Page<UserResponse> findByFirstAndLastName(String firstName, String lastName, Pageable pageable) {
-        Page<User> userPage= userRepository.findAllByFirstNameContainingAndLastNameContaining(firstName, lastName, pageable);
-        return userResponsesPage(userPage);
+    public Page<User> findByFirstAndLastName(Predicate predicate, Pageable pageable) {
+
+        QUser qUser = QUser.user;
+        BooleanBuilder builder = new BooleanBuilder();
+        builder.and(qUser.firstName.eq("Wisdom"));
+        Page<User> userPage= userRepository.findAllByFirstNameAndLastName(builder, pageable);
+//        return userResponsesPage(userPage);
+        return userPage;
     }
+
+
 
     @Override
     public User rateUser(Integer userId, int rating) {
@@ -176,6 +206,7 @@ public class UserServiceImpl implements UserService {
                 .username(user.getUsername())
                 .email(user.getEmail())
                 .createdDate(user.getCreatedDate())
+                .jobDescription(user.getJobDescription())
                 .mobile(user.getMobile())
                 .image(user.getImage())
                 .address(user.getAddress().getHouseNumber()+ ", "+
@@ -206,6 +237,7 @@ public class UserServiceImpl implements UserService {
                         user.getAddress().getState()+", "+
                         user.getAddress().getCountry())
                 .serviceType(serviceTypeList(user.getServiceType()))
+                .jobDescription(user.getJobDescription())
                 .role(user.getRole())
                 .rating(user.getRating())
                 .jobCount(user.getJobCount())
@@ -214,11 +246,4 @@ public class UserServiceImpl implements UserService {
                 .verified(user.isVerified()).build();
     }
 
-//    private int generateUniqueNumber() {
-//        return UniqueNumberGenerator.generateUniqueNumberWithDigits(10);
-//    }
-//
-//    private boolean isUnique(int uniqueNumber){
-//        return orderRepository.existsByOrderNumber(uniqueNumber);
-//    }
 }

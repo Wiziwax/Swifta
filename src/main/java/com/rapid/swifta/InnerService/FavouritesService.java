@@ -1,4 +1,4 @@
-package com.rapid.swifta.Services;
+package com.rapid.swifta.InnerService;
 
 import com.rapid.swifta.DTOs.RequestBodies.FavouritesRequestBody;
 import com.rapid.swifta.DTOs.Responses.UserResponse;
@@ -11,4 +11,5 @@ public interface FavouritesService {
     Favourites createFavourites(FavouritesRequestBody favourites);
     void deleteFavouritesById(Favourites favourites);
     Page<UserResponse> getAllFavourites(Integer userId, Pageable pageable);
+    boolean isFavourite(Integer userId, Integer favouriteId);
 }

@@ -1,7 +1,7 @@
 package com.rapid.swifta.RestControllers;
 
 import com.rapid.swifta.Entities.UserRequest;
-import com.rapid.swifta.Services.UserRequestService;
+import com.rapid.swifta.InnerService.UserRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

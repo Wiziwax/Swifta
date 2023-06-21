@@ -1,7 +1,7 @@
 package com.rapid.swifta.RestControllers;
 
 import com.rapid.swifta.Entities.Address;
-import com.rapid.swifta.Services.AddressService;
+import com.rapid.swifta.InnerService.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
