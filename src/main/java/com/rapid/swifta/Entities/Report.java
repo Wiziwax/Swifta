@@ -14,8 +14,8 @@ import java.util.Date;
 @Table
 @Entity
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class Report {
 
     @Id

@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @Table
 @Entity
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class Activity {
 
     @Id

@@ -1,17 +1,14 @@
-package com.rapid.swifta.InnerServiceImpl;
+package com.rapid.swifta.ServicesImpl;
 
-
-import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Predicate;
 import com.rapid.swifta.DTOs.RequestBodies.UserRequestBody;
 import com.rapid.swifta.DTOs.Responses.UserResponse;
 import com.rapid.swifta.Entities.Address;
-import com.rapid.swifta.Entities.QUser;
+
 import com.rapid.swifta.Entities.ServiceType;
 import com.rapid.swifta.Entities.User;
 import com.rapid.swifta.Exceptions.ResourceNotFoundException;
+import com.rapid.swifta.Services.UserService;
 import com.rapid.swifta.Repositories.*;
-import com.rapid.swifta.InnerService.UserService;
 import com.rapid.swifta.UserProps.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -34,10 +31,7 @@ public class UserServiceImpl implements UserService {
     private ServiceTypeRepository serviceTypeRepository;
 
     @Autowired
-    private OrderRepository orderRepository;
-
-    @Autowired
-    private NotificationRepository notificationRepository;
+    private FavouritesRepository favouritesRepository;
 
     @Override
     public Page<UserResponse> getAllUsersByRandom(Pageable pageable) {
@@ -109,20 +103,22 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
-    @Override
-    public Page<User> getMerchants(Predicate predicate, Pageable pageable) {
-        return null;
-    }
+
+//    public User getMerchants(Predicate predicate) {
+//        return this.userRepository.findOne(predicate).orElseThrow(()-> new ResourceNotFoundException("User not found"));
+//    }
 
 //    @Override
 //    public Page<User> getMerchants(Predicate predicate, Pageable pageable) {
-//
-//        QUser qUser = QUser.user;
-//
-//        BooleanBuilder booleanBuilder = new BooleanBuilder();
-//        booleanBuilder.and(qUser.role.eq(Role.fromNumericValue(3)));
-//
-//
+////
+////        QUser qUser = QUser.user;
+////
+////        BooleanBuilder booleanBuilder = new BooleanBuilder();
+////        booleanBuilder.and(qUser.role.eq(Role.fromNumericValue(3)));
+////        booleanBuilder.and(qUser.firstName.eq("Wisdom"));
+////
+////        return userRepository.findAllByFirstNameAndLastName(booleanBuilder, pageable);
+//        return null;
 //    }
 
     public List<Integer> findByLocation(String location) {
@@ -142,23 +138,11 @@ public class UserServiceImpl implements UserService {
         return userResponsesPage(users);
     }
 
-
-//    public List<User> searchUserssssss(String location, int serviceType, Pageable pageable) {
-//        List<Integer> addressIds = findByLocation(location);
-//        List<Integer>testService= new ArrayList<>(Arrays.asList(1,2,3,4));
-//        return userRepository.findListByServiceTypeAndLocation(addressIds, testService);
-//    }
     @Override
-    public Page<User> findByFirstAndLastName(Predicate predicate, Pageable pageable) {
-
-        QUser qUser = QUser.user;
-        BooleanBuilder builder = new BooleanBuilder();
-        builder.and(qUser.firstName.eq("Wisdom"));
-        Page<User> userPage= userRepository.findAllByFirstNameAndLastName(builder, pageable);
-//        return userResponsesPage(userPage);
-        return userPage;
+    public Page<UserResponse> findByFirstAndLastName(String firstname, String lastname, Pageable pageable) {
+        Page<User> pageUser = userRepository.findAllByFirstNameContainingAndLastNameContaining(firstname, lastname, pageable);
+        return userResponsesPage(pageUser);
     }
-
 
 
     @Override
@@ -198,6 +182,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public Page<UserResponse> userResponsesPage(Page<User> users){
+        Integer signedInUser = 1;
         return users.map(user -> UserResponse.builder()
                 .userId(user.getUserId())
                 .firstName(user.getFirstName())
@@ -207,6 +192,7 @@ public class UserServiceImpl implements UserService {
                 .email(user.getEmail())
                 .createdDate(user.getCreatedDate())
                 .jobDescription(user.getJobDescription())
+                .isFavourite(favouritesRepository.existsByCreatedByAndUserFavourite(signedInUser, user.getUserId()))//TODO CHANGE IT TO SIGNED IN USER
                 .mobile(user.getMobile())
                 .image(user.getImage())
                 .address(user.getAddress().getHouseNumber()+ ", "+

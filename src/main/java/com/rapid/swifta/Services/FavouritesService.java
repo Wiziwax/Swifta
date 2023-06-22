@@ -1,4 +1,4 @@
-package com.rapid.swifta.InnerService;
+package com.rapid.swifta.Services;
 
 import com.rapid.swifta.DTOs.RequestBodies.FavouritesRequestBody;
 import com.rapid.swifta.DTOs.Responses.UserResponse;

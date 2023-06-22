@@ -13,8 +13,8 @@ import org.springframework.data.annotation.CreatedDate;
 @Table
 @Entity
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class Comments {
 
     @Id

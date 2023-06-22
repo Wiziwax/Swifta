@@ -4,6 +4,7 @@ import com.rapid.swifta.Entities.Address;
 import com.rapid.swifta.UserProps.Role;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Data
@@ -22,6 +23,8 @@ public class UserRequestBody {
     private float rating;
     private Role role;
     private Address address;
+    private String jobDescription;
+    private BigDecimal serviceWorth;
     private List<Integer> serviceType;
 
 

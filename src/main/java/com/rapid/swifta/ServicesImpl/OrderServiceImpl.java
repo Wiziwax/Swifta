@@ -1,4 +1,4 @@
-package com.rapid.swifta.InnerServiceImpl;
+package com.rapid.swifta.ServicesImpl;
 
 import com.rapid.swifta.DTOs.RequestBodies.OrderBroadcastBody;
 import com.rapid.swifta.DTOs.RequestBodies.OrdersRequestBody;
@@ -13,7 +13,7 @@ import com.rapid.swifta.Repositories.AddressRepository;
 import com.rapid.swifta.Repositories.NotificationRepository;
 import com.rapid.swifta.Repositories.OrderRepository;
 import com.rapid.swifta.Repositories.UserRepository;
-import com.rapid.swifta.InnerService.OrderService;
+import com.rapid.swifta.Services.OrderService;
 import com.rapid.swifta.Utils.NotificationBodyString;
 import com.rapid.swifta.Utils.UniqueNumberGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -135,7 +135,9 @@ public class OrderServiceImpl implements OrderService {
                 new ResourceNotFoundException("Order with id " + order.getOrderId() + (" was not found")));
 
         existingOrder.setHasMerchantAccepted(!existingOrder.isHasMerchantAccepted());
+
         existingOrder.setEnumOrderProgress(EnumOrderProgress.IN_PROGRESS);
+
         orderRepository.save(existingOrder);
         return dataTransfer(existingOrder);
     }
@@ -157,6 +159,9 @@ public class OrderServiceImpl implements OrderService {
     public String createBroadcast(String country, String state, String area, String streetName,
                                   Integer serviceType,
                                   OrderBroadcastBody orderBroadcastBody, Pageable pageable) {
+
+
+
         Orders orders = new Orders();
         orders.setClientId(orderBroadcastBody.getClientId());//TODO Change to Signed In User
         orders.setPaymentMethod(orderBroadcastBody.getPaymentMethod());
@@ -183,18 +188,41 @@ public class OrderServiceImpl implements OrderService {
             }
 
 
+
         List<Address> addressList = addressRepository.findAllByQueryingColumns(
                 country,
                 state,
                 area,
                 streetName);
         List<Integer> addressIds = new ArrayList<>();
+
+
+        if (country != null) {
+            if (state != null) {
+                if (area != null) {
+                    if (streetName != null) {
+                        addressList = addressRepository.findAllByCountryContainingAndStateContainingAndAreaContainingAndStreetNameContaining(country, state, area, streetName);
+                    } else {
+                        addressList = addressRepository.findAllByCountryContainingAndStateContainingAndAreaContaining(country, state, area);
+                    }
+                } else {
+                    addressList = addressRepository.findAllByCountryContainingAndStateContaining(country, state);
+                }
+            } else {
+                addressList = addressRepository.findAllByCountryContaining(country);
+            }
+        }
+
+
+        System.out.println("Size of Address List is " + addressList.size());
         for(Address address: addressList){
             addressIds.add(address.getAddressId());
         }
-        List<Integer>testService= new ArrayList<>(Arrays.asList(1,2,3,4,107));
+
         List<User> broadcastUsers =
-                userRepository.findListByServiceTypeAndLocation(addressIds,testService );
+                userRepository.findListByServiceTypeAndLocation(addressIds,addressIds);
+
+
 
         for(User user: broadcastUsers){
             UserNotifications notifications = new UserNotifications();

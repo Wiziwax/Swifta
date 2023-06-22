@@ -1,4 +1,4 @@
-package com.rapid.swifta.InnerService;
+package com.rapid.swifta.Services;
 
 import com.rapid.swifta.Entities.UserRequest;
 import org.springframework.data.domain.Page;

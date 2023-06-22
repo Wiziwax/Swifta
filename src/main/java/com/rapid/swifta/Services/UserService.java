@@ -1,7 +1,5 @@
-package com.rapid.swifta.InnerService;
+package com.rapid.swifta.Services;
 
-
-import com.querydsl.core.types.Predicate;
 import com.rapid.swifta.DTOs.RequestBodies.UserRequestBody;
 import com.rapid.swifta.DTOs.Responses.UserResponse;
 import com.rapid.swifta.Entities.Address;
@@ -21,9 +19,9 @@ public interface UserService {
     void deleteUserById(Integer userId, Pageable pageable);
     UserResponse getUserById(Integer userId);
     User updateUser(User user);
-    Page<User> getMerchants(Predicate predicate, Pageable pageable);
+//    User getMerchants(Predicate predicate);
     Page<UserResponse> searchUsers(String location, int serviceType, Pageable pageable);
-    Page<User>findByFirstAndLastName(Predicate predicate, Pageable pageable);
+    Page<UserResponse>findByFirstAndLastName(String firstname, String lastname, Pageable pageable);
     User rateUser(Integer userId, int rating);
 
 }

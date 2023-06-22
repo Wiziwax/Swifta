@@ -1,4 +1,4 @@
-package com.rapid.swifta.InnerServiceImpl;
+package com.rapid.swifta.ServicesImpl;
 
 import com.rapid.swifta.DTOs.RequestBodies.FavouritesRequestBody;
 import com.rapid.swifta.DTOs.Responses.UserResponse;
@@ -7,7 +7,7 @@ import com.rapid.swifta.Entities.ServiceType;
 import com.rapid.swifta.Entities.User;
 import com.rapid.swifta.Repositories.FavouritesRepository;
 import com.rapid.swifta.Repositories.UserRepository;
-import com.rapid.swifta.InnerService.FavouritesService;
+import com.rapid.swifta.Services.FavouritesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -63,14 +63,14 @@ public class FavouritesServiceImpl implements FavouritesService {
             favouritesLists.add(favourites1.getUserFavourite());
         }
 
-        Page<User> userFavouriteList =  userRepository.findAll(favouritesLists, pageable);
+        Page<User> userFavouriteList =  userRepository.findAllFavourites(favouritesLists, pageable);
         return userService.userResponsesPage(userFavouriteList);
 
     }
 
     @Override
     public boolean isFavourite(Integer userId, Integer favouriteId) {
-        return false;
+        return favouritesRepository.existsByCreatedByAndUserFavourite(userId, favouriteId);
     }
 
     public List<String> serviceTypeList(List<ServiceType> serviceTypes){

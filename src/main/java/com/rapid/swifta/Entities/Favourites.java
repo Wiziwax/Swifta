@@ -8,8 +8,8 @@ import lombok.*;
 @Entity
 @Builder
 @ToString
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class Favourites {
 
     @Id

@@ -13,6 +13,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -22,10 +23,10 @@ import static jakarta.persistence.FetchType.LAZY;
 @Table
 @Entity
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE users us SET us.deleted = 1 WHERE us.user_id=?")
 @Where(clause = "deleted=false")
+@NoArgsConstructor
 public class User {
 
         @Id
@@ -87,6 +88,9 @@ public class User {
         private String jobDescription;
 
         @Column
+        private BigDecimal serviceWorth;
+
+        @Column
         private float rating;
 
         @Column
@@ -97,9 +101,5 @@ public class User {
 
         @Column
         private int rateCount;
-
-//        @OneToMany
-//        @JoinColumn(name = "user_favourite_id")
-//        private List<Favourites> favourites;
 
 }

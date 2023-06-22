@@ -18,4 +18,6 @@ public interface FavouritesRepository extends JpaRepository<Favourites, Integer>
     boolean existsByCreatedByAndUserFavourite(Integer userId, Integer userFavourite);
 
     List<Favourites> findAllByCreatedByAndUserFavourite(Integer userId, Integer userFavourite);
+
+
 }

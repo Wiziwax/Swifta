@@ -1,4 +1,4 @@
-package com.rapid.swifta.InnerService;
+package com.rapid.swifta.Services;
 
 public interface AttachmentService {
 }

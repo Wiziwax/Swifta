@@ -4,6 +4,7 @@ import com.rapid.swifta.UserProps.Role;
 import lombok.Builder;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class UserResponse {
     private String image;
     private String address;
     private List<String> serviceType;
+    private BigDecimal serviceWorth;
     private String jobDescription;
     private Role role;
     private float rating;
