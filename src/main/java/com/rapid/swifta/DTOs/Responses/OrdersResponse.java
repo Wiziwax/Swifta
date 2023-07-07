@@ -1,12 +1,13 @@
 package com.rapid.swifta.DTOs.Responses;
 
 import com.rapid.swifta.Entities.Address;
-import com.rapid.swifta.Entities.OrderDetails;
 import com.rapid.swifta.Enums.EnumOrderProgress;
 import com.rapid.swifta.Enums.EnumPayment;
+import jakarta.persistence.Column;
 import lombok.Builder;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalTime;
 import java.util.Date;
 
@@ -26,7 +27,9 @@ public class OrdersResponse {
     private boolean isOneOff;
     private Integer merchantId;
     private boolean hasMerchantAccepted;
-    private OrderDetails orderDetails;
+    private float quantity;
+    private BigDecimal pricePerUnit;
+    private BigDecimal totalPrice;
     private String orderComment;
     private String orderDescription;
 

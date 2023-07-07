@@ -167,7 +167,9 @@ public class OrderServiceImpl implements OrderService {
         orders.setPaymentMethod(orderBroadcastBody.getPaymentMethod());
         orders.setOrderAddress(orderBroadcastBody.getOrderAddress());
         orders.setOneOff(orderBroadcastBody.getIsOneOff());
-        orders.setOrderDetails(orderBroadcastBody.getOrderDetails());
+        orders.setQuantity(orderBroadcastBody.getQuantity());
+        orders.setPricePerUnit(orderBroadcastBody.getPricePerUnit());
+        orders.setTotalPrice(orderBroadcastBody.getTotalPrice());
         orders.setOrderDescription(orderBroadcastBody.getOrderDescription());
 
         orders.setEnumOrderProgress(EnumOrderProgress.INITIATED);
@@ -190,10 +192,8 @@ public class OrderServiceImpl implements OrderService {
 
 
         List<Address> addressList = addressRepository.findAllByQueryingColumns(
-                country,
-                state,
-                area,
-                streetName);
+                country, state,
+                area, streetName);
         List<Integer> addressIds = new ArrayList<>();
 
 
@@ -261,7 +261,9 @@ public class OrderServiceImpl implements OrderService {
                 .isOneOff(orders.isOneOff())
                 .merchantId(orders.getMerchantId())
                 .hasMerchantAccepted(orders.isHasMerchantAccepted())
-                .orderDetails(orders.getOrderDetails())
+                .quantity(orders.getQuantity())
+                .pricePerUnit(orders.getPricePerUnit())
+                .totalPrice(orders.getTotalPrice())
                 .orderComment(orders.getOrderComment())
                 .build());
     }
@@ -281,7 +283,9 @@ public class OrderServiceImpl implements OrderService {
                 .closed(existingOrder.isClosed())
                 .merchantId(existingOrder.getMerchantId())
                 .hasMerchantAccepted(existingOrder.isHasMerchantAccepted())
-                .orderDetails(existingOrder.getOrderDetails())
+                .quantity(existingOrder.getQuantity())
+                .pricePerUnit(existingOrder.getPricePerUnit())
+                .totalPrice(existingOrder.getTotalPrice())
                 .orderComment(existingOrder.getOrderComment()).build();
 
     }
@@ -303,7 +307,9 @@ public class OrderServiceImpl implements OrderService {
         userNotifications.setCreatedBy(ordersRequestBody.getClientId());
         //////////////////////////////////////////////////////////////////////////////////////////////
 
-        orders.setOrderDetails(ordersRequestBody.getOrderDetails());
+        orders.setQuantity(ordersRequestBody.getQuantity());
+        orders.setPricePerUnit(ordersRequestBody.getPricePerUnit());
+        orders.setTotalPrice(ordersRequestBody.getTotalPrice());
         orders.setOrderAddress(ordersRequestBody.getOrderAddress());
     }
 

@@ -1,5 +1,6 @@
 package com.rapid.swifta.ServicesImpl;
 
+import com.rapid.swifta.DTOs.RequestBodies.RateRequestBody;
 import com.rapid.swifta.DTOs.RequestBodies.UserRequestBody;
 import com.rapid.swifta.DTOs.Responses.UserResponse;
 import com.rapid.swifta.Entities.Address;
@@ -146,12 +147,12 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public User rateUser(Integer userId, int rating) {
+    public User rateUser(RateRequestBody rateRequestBody) {
 
-        User existingUser = userRepository.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User with Id " + userId + "could not be found"));
+        User existingUser = userRepository.findById(rateRequestBody.getId()).orElseThrow(()-> new ResourceNotFoundException("User with Id " + rateRequestBody.getId() + "could not be found"));
         float massRating = existingUser.getRateCount() * existingUser.getRating();
         int newRateCount = existingUser.getRateCount() + 1;
-        float newMassRating = rating + massRating;
+        float newMassRating = rateRequestBody.getRating() + massRating;
         float newRating = newMassRating / newRateCount;
         existingUser.setRating(newRating);
         existingUser.setRateCount(newRateCount);
@@ -209,6 +210,7 @@ public class UserServiceImpl implements UserService {
 
     public UserResponse userResponse(User user){
         return UserResponse.builder()
+                .userId(user.getUserId())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .middleName(user.getMiddleName())

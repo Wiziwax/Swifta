@@ -1,6 +1,7 @@
 package com.rapid.swifta.RestControllers;
 
 
+import com.rapid.swifta.DTOs.RequestBodies.RateRequestBody;
 import com.rapid.swifta.DTOs.RequestBodies.UserRequestBody;
 import com.rapid.swifta.DTOs.Responses.UserResponse;
 import com.rapid.swifta.Entities.Address;
@@ -86,7 +87,7 @@ public class UserRestController {
 //    Get users by location
     @GetMapping("usersbylocationrandom")
     public Page<UserResponse> findAllByRandom(@RequestParam(required = false) String location,
-                                      @RequestParam Integer roleId, Pageable pageable){
+                                                @RequestParam Integer roleId, Pageable pageable){
         return userService.findAllLocationRandom(location, roleId, pageable);
     }
 
@@ -99,9 +100,8 @@ public class UserRestController {
 
 //    Rate User
     @PutMapping("rateUser")
-    public User rateUser(@RequestParam Integer userId,
-                         @RequestParam int rating){
-        return userService.rateUser(userId, rating);
+    public User rateUser(@RequestBody RateRequestBody rateRequestBody){
+        return userService.rateUser(rateRequestBody);
     }
 
 

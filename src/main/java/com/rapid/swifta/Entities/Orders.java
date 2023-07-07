@@ -8,6 +8,7 @@ import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 import org.springframework.data.annotation.CreatedDate;
 
+import java.math.BigDecimal;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.Objects;
@@ -69,10 +70,20 @@ public class Orders {
 
     private boolean hasMerchantAccepted;
 
-    @OneToOne(cascade = {CascadeType.ALL, CascadeType.PERSIST},  fetch = LAZY)
-    @JoinColumn(name = "order_details_id")
-    @ToString.Exclude
-    private OrderDetails orderDetails ;
+//    @OneToOne(cascade = {CascadeType.ALL, CascadeType.PERSIST},  fetch = LAZY)
+//    @JoinColumn(name = "order_details_id")
+//    @ToString.Exclude
+//    private OrderDetails orderDetails ;
+
+    @Column
+    private float quantity;
+
+    @Column
+    private BigDecimal pricePerUnit;
+
+    @Column
+    private BigDecimal totalPrice;
+
 
     @Column
     private String orderComment;

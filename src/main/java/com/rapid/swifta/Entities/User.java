@@ -100,6 +100,14 @@ public class User {
         private int jobCount;
 
         @Column
+        private String summary;
+
+        @Column
+        private String skills;
+
+        @Column
         private int rateCount;
+
+
 
 }

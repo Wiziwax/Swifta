@@ -25,6 +25,9 @@ public class Comments {
     private Integer createdBy;
 
     @Column
+    private String commentBody;
+
+    @Column
     private Integer commentedUserId;
 
     @Column

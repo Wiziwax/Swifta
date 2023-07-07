@@ -1,5 +1,6 @@
 package com.rapid.swifta.Services;
 
+import com.rapid.swifta.DTOs.RequestBodies.RateRequestBody;
 import com.rapid.swifta.DTOs.RequestBodies.UserRequestBody;
 import com.rapid.swifta.DTOs.Responses.UserResponse;
 import com.rapid.swifta.Entities.Address;
@@ -22,6 +23,6 @@ public interface UserService {
 //    User getMerchants(Predicate predicate);
     Page<UserResponse> searchUsers(String location, int serviceType, Pageable pageable);
     Page<UserResponse>findByFirstAndLastName(String firstname, String lastname, Pageable pageable);
-    User rateUser(Integer userId, int rating);
+    User rateUser(RateRequestBody rateRequestBody);
 
 }

@@ -1,10 +1,11 @@
 package com.rapid.swifta.DTOs.RequestBodies;
 
 import com.rapid.swifta.Entities.Address;
-import com.rapid.swifta.Entities.OrderDetails;
 import com.rapid.swifta.Enums.EnumPayment;
+import jakarta.persistence.Column;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Data
@@ -15,6 +16,8 @@ public class OrderBroadcastBody {
     private Address orderAddress;
     private List<Integer> serviceType;
     private Boolean isOneOff;
-    private OrderDetails orderDetails;
+    private float quantity;
+    private BigDecimal pricePerUnit;
+    private BigDecimal totalPrice;
     private String orderDescription;
 }

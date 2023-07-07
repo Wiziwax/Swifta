@@ -1,9 +1,10 @@
 package com.rapid.swifta.DTOs.RequestBodies;
 
 import com.rapid.swifta.Entities.Address;
-import com.rapid.swifta.Entities.OrderDetails;
 import com.rapid.swifta.Enums.EnumPayment;
 import lombok.Data;
+
+import java.math.BigDecimal;
 
 @Data
 public class OrdersRequestBody {
@@ -15,7 +16,9 @@ public class OrdersRequestBody {
     private String orderDescription;
     private boolean isOneOff;
     private Address orderAddress;
-    private OrderDetails orderDetails;
+    private float quantity;
+    private BigDecimal pricePerUnit;
+    private BigDecimal totalPrice;
     private String orderComment;
 
 }
