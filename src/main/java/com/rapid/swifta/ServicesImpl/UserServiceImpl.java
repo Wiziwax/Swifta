@@ -1,21 +1,30 @@
 package com.rapid.swifta.ServicesImpl;
 
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rapid.swifta.DTOs.RequestBodies.RateRequestBody;
-import com.rapid.swifta.DTOs.RequestBodies.UserRequestBody;
+import com.rapid.swifta.DTOs.RequestBodies.UserRequestBodies.UserFormData;
+import com.rapid.swifta.DTOs.RequestBodies.UserRequestBodies.UserRequestBody;
+import com.rapid.swifta.DTOs.Responses.UserImageResponse;
 import com.rapid.swifta.DTOs.Responses.UserResponse;
 import com.rapid.swifta.Entities.Address;
-
+import com.rapid.swifta.Entities.Attachment;
 import com.rapid.swifta.Entities.ServiceType;
 import com.rapid.swifta.Entities.User;
+import com.rapid.swifta.Enums.EnumAttachmentPurpose;
 import com.rapid.swifta.Exceptions.ResourceNotFoundException;
-import com.rapid.swifta.Services.UserService;
 import com.rapid.swifta.Repositories.*;
+import com.rapid.swifta.Services.UserService;
 import com.rapid.swifta.UserProps.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +36,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private AddressRepository addressRepository;
+
+    @Autowired
+    private AttachmentRepository attachmentRepository;
 
     @Autowired
     private ServiceTypeRepository serviceTypeRepository;
@@ -105,23 +117,6 @@ public class UserServiceImpl implements UserService {
     }
 
 
-//    public User getMerchants(Predicate predicate) {
-//        return this.userRepository.findOne(predicate).orElseThrow(()-> new ResourceNotFoundException("User not found"));
-//    }
-
-//    @Override
-//    public Page<User> getMerchants(Predicate predicate, Pageable pageable) {
-////
-////        QUser qUser = QUser.user;
-////
-////        BooleanBuilder booleanBuilder = new BooleanBuilder();
-////        booleanBuilder.and(qUser.role.eq(Role.fromNumericValue(3)));
-////        booleanBuilder.and(qUser.firstName.eq("Wisdom"));
-////
-////        return userRepository.findAllByFirstNameAndLastName(booleanBuilder, pageable);
-//        return null;
-//    }
-
     public List<Integer> findByLocation(String location) {
         List <Address> addressList = addressRepository.findByStreetNameContainingOrAreaContainingOrStateContainingOrCountryContaining(location, location, location, location);
         List<Integer> addressIds = new ArrayList<>();
@@ -157,6 +152,55 @@ public class UserServiceImpl implements UserService {
         existingUser.setRating(newRating);
         existingUser.setRateCount(newRateCount);
         return userRepository.save(existingUser);
+    }
+
+    @Override
+    public User createUserwithImage(UserFormData userRequestDTO) throws IOException {
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        UserRequestBody userRequestBody = mapper.readValue(userRequestDTO.getUserRequest(), new TypeReference<UserRequestBody>() {
+        });
+        User newUser = new User();
+        mapFields(userRequestBody, newUser);
+
+        userRepository.save(newUser);
+        assert userRequestDTO.getUserImage() != null;
+        uploadRequestAttachment(userRequestDTO.getUserImage(), newUser);
+        return newUser;
+    }
+
+    @Override
+    public Page<UserImageResponse> getUsersWithImage(Pageable pageable) {
+        Page<User> users = userRepository.findAllByRandom(pageable);
+        return userImageResponsesPage(users);
+    }
+
+    @Override
+    public UserImageResponse getUserWithImage(Integer userId) {
+        User user = userRepository.findById(userId).orElseThrow(()-> new ResourceNotFoundException("What seekest thou?"));
+        return userImageResponse(user);
+    }
+
+
+    public void uploadRequestAttachment(MultipartFile uploadFIle, User user) throws IOException {
+
+        String mimeType = uploadFIle.getContentType();
+        byte[] bArray = uploadFIle.getBytes();
+        String name = uploadFIle.getName();
+
+
+
+        Attachment newAttachment = new Attachment();
+
+        newAttachment.setCreatedBy(user.getUserId());
+        newAttachment.setAttachmentData(bArray);
+        newAttachment.setAttachmentName(name);
+        newAttachment.setAttachmentPurpose(EnumAttachmentPurpose.USER_PROFILE_IMAGE);
+        newAttachment.setMimeType(mimeType);
+
+        attachmentRepository.save(newAttachment);
+
     }
 
 
@@ -208,6 +252,39 @@ public class UserServiceImpl implements UserService {
                 .rateCount(user.getRateCount()).build());
     }
 
+
+
+    public Page<UserImageResponse> userImageResponsesPage(Page<User> users){
+        Integer signedInUser = 1;
+        return users.map(user -> UserImageResponse.builder()
+                .userId(user.getUserId())
+                .firstName(user.getFirstName())
+                .middleName(user.getMiddleName())
+                .lastName(user.getLastName())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .createdDate(user.getCreatedDate())
+                .jobDescription(user.getJobDescription())
+                .isFavourite(favouritesRepository.existsByCreatedByAndUserFavourite(signedInUser, user.getUserId()))//TODO CHANGE IT TO SIGNED IN USER
+                .mobile(user.getMobile())
+                .image(user.getImage())
+                .userImage(getAttachment(user.getUserId()))
+                .address(user.getAddress().getHouseNumber()+ ", "+
+                        user.getAddress().getStreetName()+", "+
+                        user.getAddress().getArea()+", "+
+                        user.getAddress().getState()+", "+
+                        user.getAddress().getCountry())
+                .serviceType(serviceTypeList(user.getServiceType()))
+                .role(user.getRole())
+                .rating(user.getRating())
+                .isBusy(user.isBusy())
+                .rateCount(user.getRateCount()).build());
+    }
+
+
+
+
+
     public UserResponse userResponse(User user){
         return UserResponse.builder()
                 .userId(user.getUserId())
@@ -233,5 +310,39 @@ public class UserServiceImpl implements UserService {
                 .isBusy(user.isBusy())
                 .verified(user.isVerified()).build();
     }
+
+
+
+    public UserImageResponse userImageResponse(User user){
+        return UserImageResponse.builder()
+                .userId(user.getUserId())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .middleName(user.getMiddleName())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .createdDate(user.getCreatedDate())
+                .mobile(user.getMobile())
+                .image(user.getImage())
+                .address(user.getAddress().getHouseNumber()+ ", "+
+                        user.getAddress().getStreetName()+", "+
+                        user.getAddress().getArea()+", "+
+                        user.getAddress().getState()+", "+
+                        user.getAddress().getCountry())
+                .serviceType(serviceTypeList(user.getServiceType()))
+                .jobDescription(user.getJobDescription())
+                .role(user.getRole())
+                .userImage(getAttachment(user.getUserId()))
+                .rating(user.getRating())
+                .jobCount(user.getJobCount())
+                .rateCount(user.getRateCount())
+                .isBusy(user.isBusy())
+                .verified(user.isVerified()).build();
+    }
+    public Attachment getAttachment(Integer userId){
+        return attachmentRepository.findByCreatedBy(userId).orElseThrow(()-> new ResourceNotFoundException("Attachment with user Id " + userId +" was not found"));
+    }
+
+
 
 }

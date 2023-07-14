@@ -39,6 +39,12 @@ public class Attachment {
     private byte[] attachmentData;
 
     @Column
+    private String mimeType;
+
+    @Column
+    private String docType;
+
+    @Column
     private EnumAttachmentPurpose attachmentPurpose;
 
     @Override

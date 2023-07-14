@@ -34,7 +34,7 @@ public class ServicesRestController {
     }
 
     @GetMapping("getbyservicetype")
-    public Page<ServicesResponse> getAllServiceTypeByRandom(Integer serviceType, Pageable pageable){
+    public Page<ServicesResponse> getAllServiceTypeByRandom(@RequestParam Integer serviceType, Pageable pageable){
         return servicesService.getByServiceType(serviceType, pageable);
     }
 

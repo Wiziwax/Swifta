@@ -2,11 +2,14 @@ package com.rapid.swifta.RestControllers;
 
 
 import com.rapid.swifta.DTOs.RequestBodies.RateRequestBody;
-import com.rapid.swifta.DTOs.RequestBodies.UserRequestBody;
+import com.rapid.swifta.DTOs.RequestBodies.UserRequestBodies.UserFormData;
+import com.rapid.swifta.DTOs.RequestBodies.UserRequestBodies.UserRequestBody;
+import com.rapid.swifta.DTOs.Responses.UserImageResponse;
 import com.rapid.swifta.DTOs.Responses.UserResponse;
 import com.rapid.swifta.Entities.Address;
 import com.rapid.swifta.Entities.User;
 import com.rapid.swifta.Services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +26,21 @@ public class UserRestController {
     @PostMapping("create")
     public User createUser(@RequestBody UserRequestBody user){
         return userService.createUser(user);
+    }
+
+    @PostMapping("createfd")
+    public User createUserWithImage(@Valid @ModelAttribute UserFormData userRequestDTO) throws Exception{
+        return userService.createUserwithImage(userRequestDTO);
+    }
+
+    @GetMapping("getuserimage")
+    public UserImageResponse getUserImage(@RequestParam Integer userId){
+        return userService.getUserWithImage(userId);
+    }
+
+    @GetMapping("getusersandimages")
+    public Page<UserImageResponse> getUserImages(Pageable pageable){
+        return userService.getUsersWithImage(pageable);
     }
 
 //    Get all users by random
@@ -50,6 +68,11 @@ public class UserRestController {
     public void deleteUser(@RequestBody Integer userId, Pageable pageable){
         userService.deleteUserById(userId, pageable);
     }
+
+//    @GetMapping("getuserswithimage")
+//    public Page<UserImageResponse> getUserImage(Pageable pageable){
+//        return userService.userAndImage(pageable);
+//    }
 
 
     @GetMapping("findrandombylocation")

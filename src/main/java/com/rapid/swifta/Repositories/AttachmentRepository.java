@@ -16,4 +16,5 @@ public interface AttachmentRepository extends JpaRepository<Attachment, Integer>
     List<Attachment> findAllByCreatedBy(Integer userId);
     List<Attachment> findByAttachmentName(String name);
     List<Attachment> findByServiceId(Integer serviceId);
+    Optional<Attachment> findByCreatedBy(Integer userId);
 }

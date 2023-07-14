@@ -1,4 +1,4 @@
-package com.rapid.swifta.DTOs.RequestBodies;
+package com.rapid.swifta.DTOs.RequestBodies.UserRequestBodies;
 
 import com.rapid.swifta.Entities.Address;
 import com.rapid.swifta.UserProps.Role;

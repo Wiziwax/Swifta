@@ -9,7 +9,8 @@ public class ServicesRequestBody {
     private Integer userId;
     private String serviceTitle;
     private String serviceSummary;
-    private String servicesOffered;
+    private String serviceOffered;
     private Integer serviceTypeId;
+    private float serviceCharge;
 
 }

@@ -1,5 +1,6 @@
 package com.rapid.swifta.DTOs.Responses;
 
+
 import com.rapid.swifta.Entities.Attachment;
 import com.rapid.swifta.UserProps.Role;
 import lombok.Builder;
@@ -11,7 +12,7 @@ import java.util.List;
 
 @Data
 @Builder
-public class UserResponse {
+public class UserImageResponse {
 
     private Integer userId;
     private String firstName;
@@ -26,10 +27,10 @@ public class UserResponse {
     private List<String> serviceType;
     private BigDecimal serviceWorth;
     private String jobDescription;
-    private Attachment attachment;
     private Role role;
     private float rating;
     private int jobCount;
+    private Attachment userImage;
     private boolean isFavourite;
     private int rateCount;
     private boolean isBusy;

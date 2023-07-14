@@ -76,10 +76,12 @@ public class ServicesServiceImpl implements ServicesService {
 
     private Services dataTransfer(ServicesRequestBody servicesRequestBody, Services newService) {
 
+        newService.setUserId(servicesRequestBody.getUserId());
         newService.setServiceTitle(servicesRequestBody.getServiceTitle());
         newService.setServiceSummary(servicesRequestBody.getServiceSummary());
-        newService.setServicesOffered(servicesRequestBody.getServicesOffered());
+        newService.setServicesOffered(servicesRequestBody.getServiceOffered());
         newService.setServiceTypeId(servicesRequestBody.getServiceTypeId());
+        newService.setServiceCharge(servicesRequestBody.getServiceCharge());
 
         return serviceRepository.save(newService);
     }
